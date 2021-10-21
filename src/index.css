@@ -9,3 +9,22 @@ body {
   font-family: "Open Sans", sans-serif;
   @apply h-screen;
 }
+
+.navbar {
+  @apply fixed top-0 left-0 right-0 
+  bg-green-600 text-white 
+  shadow-md flex
+  justify-between
+  items-center
+  px-10 py-2;
+}
+
+.navlink-props {
+  @apply cursor-pointer p-3
+  rounded-md hover:bg-green-500;
+}
+
+.profile {
+  @apply cursor-pointer p-3
+  rounded-full hover:bg-green-500;
+}
