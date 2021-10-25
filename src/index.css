@@ -39,13 +39,13 @@ body {
 }
 
 .navlinks ul {
-    @apply space-x-10 m-0 p-0
+    @apply md:space-x-5 lg:space-x-8 m-0 p-0
     flex flex-col md:flex-row
     w-full md:w-auto;
 }
 
 .navlinks li {
-    @apply list-none m-0 text-center;
+    @apply m-0 p-0 text-center;
 }
 
 .navlinks li a {
