@@ -1,22 +1,26 @@
 import { useState } from "react";
-import { AiOutlineNumber, AiOutlineUser, AiOutlineMenu } from "react-icons/ai";
+import { AiOutlineNumber, AiOutlineUser } from "react-icons/ai";
 import { Link } from "react-router-dom";
+import Button from "./Button";
 
 const NavBar = () => {
   const ICONSIZE = 24;
+  const [expandState, setExpandState] = useState(false);
   const [navlinks, setNavLink] = useState("navlinks");
-  let navState = false;
+
   const toggleMobileMenu = () => {
-    if (!navState) {
-      setNavLink("navlinks active");
-    } else {
+    setExpandState(!expandState);
+
+    if (expandState) {
       setNavLink("navlinks");
+    } else {
+      setNavLink("navlinks active");
     }
   };
 
   return (
     <nav className="navbar">
-      <h1 className="cursor-pointer p-3 rounded-md hover:bg-green-500 flex font-black">
+      <h1 className="brand-section">
         <AiOutlineNumber size={ICONSIZE} /> greello
       </h1>
 
@@ -37,12 +41,12 @@ const NavBar = () => {
         </ul>
       </div>
 
-      <div className="flex">
+      <div className="flex absolute top-1 right-3">
         <div className="profile">
           <AiOutlineUser size={ICONSIZE} />
         </div>
         <div onClick={toggleMobileMenu} className="menu">
-          <AiOutlineMenu size={ICONSIZE} />
+          <Button expandState={expandState} />
         </div>
       </div>
     </nav>

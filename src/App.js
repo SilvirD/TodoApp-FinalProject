@@ -1,9 +1,9 @@
-import NavBar from "./components/NavBar";
+import NavBar from "./components/navbar/NavBar";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import Workspace from "./components/Workspace";
-import Recent from "./components/Recent";
-import Bookmark from "./components/Bookmark";
-import Notification from "./components/Notification";
+import Workspace from "./components/pages/Workspace";
+import Recent from "./components/pages/Recent";
+import Bookmark from "./components/pages/Bookmark";
+import Notification from "./components/pages/Notification";
 
 function App() {
   return (
