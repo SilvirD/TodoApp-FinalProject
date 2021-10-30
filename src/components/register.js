@@ -33,11 +33,32 @@ const Register = () => {
   const isValidateEmail = validateEmail(email.trim());
   const isValidatePassword = validatePassword(password);
 
+  // Data send to BE
+
   const _handleSubmit = () => {
     checkInputName(name);
     checkInputEmail(email);
     checkInputPassword(password);
     checkInputRepassword(re_password);
+    const dataRegister = {
+      username: name,
+      email: email,
+      password: password,
+    };
+    console.log("data", dataRegister);
+    // axios
+    //   .post("http://localhost:5005/user/addUser", dataRegister)
+    //   .then((response) => {
+    //     console.log(response);
+    //     alert("add user successfully");
+    //     setName("");
+    //     setEmail("");
+    //     setPassword("");
+    //     setRePassword("");
+    //   })
+    //   .catch((error) => {
+    //     console.log("error send data", error);
+    //   });
   };
 
   // functions check
