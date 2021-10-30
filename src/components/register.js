@@ -45,20 +45,19 @@ const Register = () => {
       email: email,
       password: password,
     };
-    console.log("data", dataRegister);
-    // axios
-    //   .post("http://localhost:5005/user/addUser", dataRegister)
-    //   .then((response) => {
-    //     console.log(response);
-    //     alert("add user successfully");
-    //     setName("");
-    //     setEmail("");
-    //     setPassword("");
-    //     setRePassword("");
-    //   })
-    //   .catch((error) => {
-    //     console.log("error send data", error);
-    //   });
+    axios
+      .post("http://localhost:5005/user/addUser", dataRegister)
+      .then((response) => {
+        console.log(response);
+        alert("add user successfully");
+        setName("");
+        setEmail("");
+        setPassword("");
+        setRePassword("");
+      })
+      .catch((error) => {
+        alert("error send data", error);
+      });
   };
 
   // functions check
@@ -71,11 +70,6 @@ const Register = () => {
     } else if (!isValidateName) {
       setMsgName({
         err: "Invalid name",
-      });
-      return 1;
-    } else {
-      setMsgName({
-        err: "name oke",
       });
       return 1;
     }
@@ -99,11 +93,6 @@ const Register = () => {
         err: "Email already exits",
       });
       return 1;
-    } else {
-      setMsgEmail({
-        err: "email oke",
-      });
-      return 1;
     }
   }
   function checkInputPassword(password) {
@@ -117,11 +106,6 @@ const Register = () => {
         err: "Invalid password. Should contain at least one digit, one lower case, one upper case, 8 characters.",
       });
       return 1;
-    } else {
-      setMsgPassword({
-        err: "password oke",
-      });
-      return 1;
     }
   }
   function checkInputRepassword(rePassword) {
@@ -133,11 +117,6 @@ const Register = () => {
     } else if (!(rePassword === password)) {
       setMsgRePassword({
         err: "Incorrect confirm password",
-      });
-      return 1;
-    } else {
-      setMsgRePassword({
-        err: "Confirm password oke",
       });
       return 1;
     }
