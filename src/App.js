@@ -15,21 +15,12 @@ function App() {
           <NavBar />
 
           <Switch>
-            <Route exact path="/">
-              <Workspace />
-            </Route>
-            <Route exact path="/recent">
-              <Recent />
-            </Route>
-            <Route exact path="/bookmark">
-              <Bookmark />
-            </Route>
-            <Route exact path="/notification">
-              <Notification />
-            </Route>
-
-            <Route path="/login" exact component={Login} />
-            <Route path="/register" exact component={Register} />
+            <Route exact path="/" component={Workspace} />
+            <Route exact path="/recent" component={Recent} />
+            <Route exact path="/bookmark" component={Bookmark} />
+            <Route exact path="/notification" component={Notification}/>
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/register" component={Register} />
           </Switch>
         </div>
       </Router>
