@@ -1,0 +1,38 @@
+.form-modal {
+  @apply fixed top-1/2 left-1/2 w-full md:w-1/2
+	bg-gray-100 p-8 rounded-lg shadow-lg;
+  transform: translate(-50%, -50%);
+
+  h1 {
+    @apply text-2xl font-bold;
+  }
+
+  hr {
+    @apply my-4;
+  }
+
+  form {
+    @apply flex flex-col;
+
+    input {
+      @apply rounded-md p-4 my-4;
+    }
+
+		textarea {
+			@apply resize-none rounded-md h-60 my-4;
+		}
+
+    #submit {
+      @apply bg-green-500 text-white rounded-md;
+    }
+  }
+
+  button {
+    @apply p-4;
+  }
+}
+
+.overlay {
+  @apply fixed top-0 left-0 bottom-0 right-0 z-40;
+  background-color: rgba(0, 0, 0, 0.5);
+}

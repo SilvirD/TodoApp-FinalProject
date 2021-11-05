@@ -27,7 +27,7 @@ const NavBar = () => {
       <div className={navlinks}>
         <ul>
           <li>
-            <Link to="/">Workspaces</Link>
+            <Link to="/">Không gian</Link>
           </li>
           <li>
             <Link to="/recent">Gần đây</Link>
