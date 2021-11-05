@@ -19,16 +19,16 @@
     }
 
 		textarea {
-			@apply resize-none rounded-md h-60 my-4;
+			@apply resize-none rounded-md h-60 p-4 my-4;
 		}
 
     #submit {
-      @apply bg-green-500 text-white rounded-md;
+      @apply bg-green-500 text-white cursor-pointer rounded-md;
     }
   }
 
   button {
-    @apply p-4;
+    @apply p-4 rounded-md hover:bg-gray-200;
   }
 }
 

@@ -5,6 +5,16 @@ import Card from '../Workspace/Card';
 
 const Workspace = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [cardInfo, setCardInfo] = useState([
+    {
+      name: 'Card 1',
+      description: 'This is card 1',
+    },
+    {
+      name: 'Card 2',
+      description: 'This is card 2',
+    },
+  ]);
 
   return (
     <div className="workspace">
@@ -14,13 +24,18 @@ const Workspace = () => {
         </button>
       </div>
 
-      <FormModal open={isOpen} onClose={() => setIsOpen(false)} />
+      <FormModal open={isOpen} cInfo={cardInfo} setCardInfo={() => setCardInfo(cardInfo)} onClose={() => setIsOpen(false)} />
 
       <div className="browser">
         <h1>Không gian của bạn</h1>
 
         <div className="bar">
-          <Card />
+          {
+            cardInfo.map(card => (
+              <Card name={card.name} description={card.description} />
+            ))
+          }
+          {/* <Card name={cardInfo[0].name} description={cardInfo[0].description} /> */}
         </div>
       </div>
     </div>

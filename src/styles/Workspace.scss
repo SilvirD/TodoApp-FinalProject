@@ -13,11 +13,11 @@
 		}
 
     .bar {
-			@apply my-4 grid gap-4;
-			grid-template-columns: repeat(auto-fit, minmax(384px, 1fr));
+			@apply my-4 inline-grid gap-4;
+			grid-template-columns: repeat(auto-fill, minmax(370px, 1fr));
 
       .card {
-        @apply bg-gray-200 w-96 rounded-md p-4 cursor-pointer;
+        @apply bg-gray-200 rounded-md p-4 cursor-pointer;
         h1 {
           @apply font-bold text-3xl;
         }
