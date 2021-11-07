@@ -1,18 +1,31 @@
-import React from "react";
-import { useState, useEffect } from "react";
 import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router";
+import FormInput from "../common/FormInput";
+
+const initialValue = {
+  email: "",
+  password: "",
+};
+
+const initialMsg = {
+  msgEmail: "",
+  msgPassword: "",
+};
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const history = useHistory();
 
-  const [msgEmail, setMsgEmail] = useState("");
-  const [msgPassword, setMsgPassword] = useState("");
+  const [userInfo, setUserInfo] = useState(initialValue);
+  const [errorMsg, setErrorMsg] = useState(initialMsg);
+
+  const [repo, setRepo] = useState([]);
+
+  const { email, password } = userInfo;
+  const { msgEmail, msgPassword } = errorMsg;
 
   const isValidateEmail = validateEmail(email.trim());
   const isValidatePassword = validatePassword(password);
-
-  const [repo, setRepo] = useState([]);
 
   // fetch data localhost
   useEffect(() => {
@@ -23,7 +36,7 @@ const Login = () => {
         setRepo(user);
       })
       .catch((error) => {
-        console.log("error fetch data", error);
+        alert("error fetch data", error);
       });
   }, []);
 
@@ -39,36 +52,22 @@ const Login = () => {
   }
   function checkInputEmail(email) {
     if (!email) {
-      setMsgEmail({
-        err: "Please enter email",
-      });
+      setErrorMsg({ ...errorMsg, msgEmail: "Please enter email" });
       return 1;
     } else if (!isValidateEmail) {
-      setMsgEmail({
-        err: "Invalid email",
-      });
-      return 1;
-    } else {
-      setMsgEmail({
-        err: "email oke",
-      });
+      setErrorMsg({ ...errorMsg, msgEmail: "Invalid email" });
       return 1;
     }
   }
   function checkInputPassword(password) {
     if (!password) {
-      setMsgPassword({
-        err: "Please enter password",
-      });
+      setErrorMsg({ ...errorMsg, msgPassword: "Please enter password" });
       return 1;
     } else if (!isValidatePassword) {
-      setMsgPassword({
-        err: "Invalid password. Should contain at least one digit, one lower case, one upper case, 8 characters.",
-      });
-      return 1;
-    } else {
-      setMsgPassword({
-        err: "password oke",
+      setErrorMsg({
+        ...errorMsg,
+        msgPassword:
+          "Invalid password. Should contain at least one digit, one lower case, one upper case, 8 characters.",
       });
       return 1;
     }
@@ -79,15 +78,20 @@ const Login = () => {
     );
   }
 
-  const _handleSubmit = () => {
+  const _handleSubmit = async () => {
     checkInputEmail(email);
     checkInputPassword(password);
-    console.log(checkLogin(email, password));
-    if (checkLogin(email, password)) {
-      alert("login successfuly");
-    } else {
-      alert("login failed");
-    }
+  
+    await axios
+      .post("http://localhost:5005/login", userInfo)
+      .then((response) => {
+        localStorage.setItem("tokenLogin", response.data);
+        alert("login successfully");
+        history.push("/");
+      })
+      .catch((error) => {
+        alert("error send data", error);
+      });
   };
 
   return (
@@ -96,31 +100,29 @@ const Login = () => {
         <div className="container max-w-lg mx-auto flex-1 flex flex-col items-center justify-center px-2">
           <div className="bg-white px-6 py-8 rounded shadow-md text-black w-full">
             <h1 className="mb-8 text-3xl text-center font-bold">Login</h1>
-            <input
-              type="text"
-              className="block border border-grey-light w-full p-3 rounded mt-4"
-              name="email"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+            <FormInput
+              inputType="email"
+              inputName="email"
+              inputPlaceHolder="Email"
+              onInputChange={{
+                initial: userInfo,
+                type: "email",
+                setUserInfo,
+              }}
+              errorMessage={msgEmail}
             />
-            {msgEmail.err ? (
-              <p className="text-red-400 font-bold mb-4 pl-2">{msgEmail.err}</p>
-            ) : null}
 
-            <input
-              type="password"
-              className="block border border-grey-light w-full p-3 rounded mt-4"
-              name="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+            <FormInput
+              inputType="password"
+              inputName="password"
+              inputPlaceHolder="Password"
+              onInputChange={{
+                initial: userInfo,
+                type: "password",
+                setUserInfo,
+              }}
+              errorMessage={msgPassword}
             />
-            {msgPassword.err ? (
-              <p className="text-red-400 font-bold mb-4 pl-2">
-                {msgPassword.err}
-              </p>
-            ) : null}
 
             <button
               onClick={_handleSubmit}

@@ -1,20 +1,29 @@
-import React from "react";
-import { useState, useEffect } from "react";
 import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import FormInput from "./common/FormInput";
+
+const initialValue = {
+  name: "",
+  email: "",
+  password: "",
+  rePassword: "",
+};
+
+const initialMsg = {
+  msgName: "",
+  msgEmail: "",
+  msgPassword: "",
+  msgRePassword: "",
+};
 
 const Register = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [re_password, setRePassword] = useState("");
-
-  const [msgName, setMsgName] = useState("");
-  const [msgEmail, setMsgEmail] = useState("");
-  const [msgPassword, setMsgPassword] = useState("");
-  const [msgRePassword, setMsgRePassword] = useState("");
-
+  const [userInfo, setUserInfo] = useState(initialValue);
+  const [errorMsg, setErrorMsg] = useState(initialMsg);
   const [repo, setRepo] = useState([]);
+
+  const { name, email, password, rePassword } = userInfo;
+  const { msgName, msgEmail, msgPassword, msgRePassword } = errorMsg;
 
   // fetch data localhost
   useEffect(() => {
@@ -34,43 +43,42 @@ const Register = () => {
   const isValidatePassword = validatePassword(password);
 
   // Data send to BE
-
   const _handleSubmit = () => {
-    checkInputName(name);
-    checkInputEmail(email);
-    checkInputPassword(password);
-    checkInputRepassword(re_password);
-    const dataRegister = {
-      username: name,
-      email: email,
-      password: password,
-    };
-    axios
-      .post("http://localhost:5005/user/addUser", dataRegister)
-      .then((response) => {
-        console.log(response);
-        alert("add user successfully");
-        setName("");
-        setEmail("");
-        setPassword("");
-        setRePassword("");
-      })
-      .catch((error) => {
-        alert("error send data", error);
-      });
+    if (
+      checkInputName(name) ||
+      checkInputEmail(email) ||
+      checkInputPassword(password) ||
+      checkInputRepassword(rePassword, password)
+    ) {
+    } else {
+      const dataRegister = {
+        username: name,
+        email: email,
+        password: password,
+      };
+      axios
+        .post("http://localhost:5005/user/addUser", dataRegister)
+        .then((response) => {
+          console.log(response);
+          alert("add user successfully");
+          setErrorMsg(initialMsg);
+          setUserInfo(initialValue);
+        })
+        .catch((error) => {
+          alert("error send data", error);
+        });
+    }
   };
 
   // functions check
   function checkInputName(name) {
     if (!name) {
-      setMsgName({
-        err: "Please enter name",
-      });
+      setErrorMsg({ ...errorMsg, msgName: "Please enter name" });
+
       return 1;
     } else if (!isValidateName) {
-      setMsgName({
-        err: "Invalid name",
-      });
+      setErrorMsg({ ...errorMsg, msgName: "Invalid name" });
+
       return 1;
     }
   }
@@ -79,45 +87,40 @@ const Register = () => {
   }
   function checkInputEmail(email) {
     if (!email) {
-      setMsgEmail({
-        err: "Please enter email",
-      });
+      setErrorMsg({ ...errorMsg, msgEmail: "Please enter email" });
       return 1;
     } else if (!isValidateEmail) {
-      setMsgEmail({
-        err: "Invalid email",
-      });
+      setErrorMsg({ ...errorMsg, msgEmail: "Invalid email" });
       return 1;
     } else if (checkExitsEmail(email)) {
-      setMsgEmail({
-        err: "Email already exits",
-      });
+      setErrorMsg({ ...errorMsg, msgEmail: "Email already exits" });
       return 1;
     }
   }
   function checkInputPassword(password) {
     if (!password) {
-      setMsgPassword({
-        err: "Please enter password",
-      });
+      setErrorMsg({ ...errorMsg, msgPassword: "Please enter password" });
       return 1;
     } else if (!isValidatePassword) {
-      setMsgPassword({
-        err: "Invalid password. Should contain at least one digit, one lower case, one upper case, 8 characters.",
+      setErrorMsg({
+        ...errorMsg,
+        msgPassword:
+          "Invalid password. Should contain at least one digit, one lower case, one upper case, 8 characters.",
       });
       return 1;
     }
   }
-  function checkInputRepassword(rePassword) {
+  function checkInputRepassword(rePassword, password) {
     if (!rePassword) {
-      setMsgRePassword({
-        err: "Please enter confirm password",
+      setErrorMsg({
+        ...errorMsg,
+        msgRePassword: "Please enter confirm password",
       });
+
       return 1;
     } else if (!(rePassword === password)) {
-      setMsgRePassword({
-        err: "Incorrect confirm password",
-      });
+      setErrorMsg({ ...errorMsg, msgRePassword: "Incorrect confirm password" });
+
       return 1;
     }
   }
@@ -145,61 +148,50 @@ const Register = () => {
           <div className="container max-w-lg mx-auto flex-1 flex flex-col items-center justify-center px-2">
             <div className="bg-white px-6 py-8 rounded shadow-md text-black w-full">
               <h1 className="mb-8 text-3xl text-center font-bold">Sign up</h1>
-              <input
-                type="text"
-                className="block border border-grey-light w-full p-3 rounded mt-4"
-                name="username"
-                placeholder="Full Name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-              {msgName.err ? (
-                <p className="text-red-400 font-bold mb-4 pl-2">
-                  {msgName.err}
-                </p>
-              ) : null}
 
-              <input
-                type="text"
-                className="block border border-grey-light w-full p-3 rounded mt-4"
-                name="email"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+              <FormInput
+                inputType="text"
+                inputName="username"
+                inputPlaceHolder="Full Name"
+                onInputChange={{ initial: userInfo, type: "name", setUserInfo }}
+                errorMessage={msgName}
               />
-              {msgEmail.err ? (
-                <p className="text-red-400 font-bold mb-4 pl-2">
-                  {msgEmail.err}
-                </p>
-              ) : null}
 
-              <input
-                type="password"
-                className="block border border-grey-light w-full p-3 rounded mt-4"
-                name="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+              <FormInput
+                inputType="email"
+                inputName="email"
+                inputPlaceHolder="Email"
+                onInputChange={{
+                  initial: userInfo,
+                  type: "email",
+                  setUserInfo,
+                }}
+                errorMessage={msgEmail}
               />
-              {msgPassword.err ? (
-                <p className="text-red-400 font-bold mb-4 pl-2">
-                  {msgPassword.err}
-                </p>
-              ) : null}
 
-              <input
-                type="password"
-                className="block border border-grey-light w-full p-3 rounded mt-4"
-                name="confirm_password"
-                placeholder="Confirm Password"
-                value={re_password}
-                onChange={(e) => setRePassword(e.target.value)}
+              <FormInput
+                inputType="password"
+                inputName="password"
+                inputPlaceHolder="Password"
+                onInputChange={{
+                  initial: userInfo,
+                  type: "password",
+                  setUserInfo,
+                }}
+                errorMessage={msgPassword}
               />
-              {msgRePassword.err ? (
-                <p className="text-red-400 font-bold mb-4 pl-2">
-                  {msgRePassword.err}
-                </p>
-              ) : null}
+
+              <FormInput
+                inputType="password"
+                inputName="confirm_password"
+                inputPlaceHolder="Confirm Password"
+                onInputChange={{
+                  initial: userInfo,
+                  type: "rePassword",
+                  setUserInfo,
+                }}
+                errorMessage={msgRePassword}
+              />
 
               <button
                 onClick={_handleSubmit}
