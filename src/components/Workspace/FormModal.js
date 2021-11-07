@@ -1,49 +1,66 @@
-import ReactDom from 'react-dom'
-import { useState } from 'react';
-import '../../dist/styles/FormModal.css'
+import ReactDom from "react-dom";
+import { useState, useEffect } from "react";
+import "../../dist/styles/FormModal.css";
+import axios from "axios";
 
 export default function FormModal({ open, cInfo, setCardInfo, onClose }) {
-	const [cardName, setCardName] = useState("");
-	const [cardDesc, setCardDesc] = useState("");
+  const [cardName, setCardName] = useState("");
+  const [cardDesc, setCardDesc] = useState("");
 
-	if (!open) {
-		return null;
-	}
+  if (!open) {
+    return null;
+  }
 
-	const createNewCard = (e, cInfo) => {
-		e.preventDefault();
+  const createNewCard = async (e, cInfo) => {
+    e.preventDefault();
 
-		let newCard = {
-			name: cardName,
-			description: cardDesc,
-		}
+    let newCard = {
+      name: cardName,
+      desc: cardDesc,
+      userToken: localStorage.getItem("tokenLogin"),
+    };
 
-		setCardInfo(cInfo.push(newCard));
-		onClose(!open);
-	}
+    await axios
+      .post("http://localhost:5005/workspace/addWorkspace", newCard)
+      .then((response) => {
+        alert("add WS successfully");
+      })
+      .catch((error) => {
+        alert("error send data", error);
+      });
 
-	return ReactDom.createPortal(
-	// return (
-		<>
-			<div className="overlay">
-				<div className="form-modal">
-					<h1>Tạo không gian làm việc mới</h1>
-					<hr />
-					<form onSubmit={(e) =>
-						createNewCard(e, cInfo)
-					}>
-						<label htmlFor="name">Tên không gian</label>
-						<input type="text" id="name" name="name" value={cardName}
-							onChange={(e) => setCardName(e.target.value)} />
-						<label htmlFor="desc">Mô tả</label>
-						<textarea type="text" id="desc" name="desc" value={cardDesc}
-							onChange={(e) => setCardDesc(e.target.value)}></textarea>
-						<input type="submit" id="submit" value="Tạo" />
-						<button onClick={onClose}>Đóng</button>
-					</form>
-				</div>
-			</div>
-		</>,
-		document.getElementById('portal')
-	)
+    onClose(!open);
+  };
+
+  return ReactDom.createPortal(
+    <>
+      <div className="overlay">
+        <div className="form-modal">
+          <h1>Tạo không gian làm việc mới</h1>
+          <hr />
+          <form onSubmit={(e) => createNewCard(e, cInfo)}>
+            <label htmlFor="name">Tên không gian</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              value={cardName}
+              onChange={(e) => setCardName(e.target.value)}
+            />
+            <label htmlFor="desc">Mô tả</label>
+            <textarea
+              type="text"
+              id="desc"
+              name="desc"
+              value={cardDesc}
+              onChange={(e) => setCardDesc(e.target.value)}
+            ></textarea>
+            <input type="submit" id="submit" value="Tạo" />
+            <button onClick={onClose}>Đóng</button>
+          </form>
+        </div>
+      </div>
+    </>,
+    document.getElementById("portal")
+  );
 }
