@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import FormInput from "./common/FormInput";
+import FormInput from "../common/FormInput";
 
 const initialValue = {
   name: "",
