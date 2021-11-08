@@ -8,11 +8,15 @@ const Workspace = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [cardInfo, setCardInfo] = useState([]);
 
+  let userToken = localStorage.getItem("tokenLogin");
+
   useEffect(() => {
-    axios.get("http://localhost:5005/workspace").then((response) => {
-      setCardInfo(response.data);
-    });
-  }, [cardInfo]);
+    axios
+      .get(`http://localhost:5005/workspace/user/${userToken}`)
+      .then((response) => {
+        setCardInfo(response.data);
+      });
+  }, []);
 
   return (
     <div className="workspace">
