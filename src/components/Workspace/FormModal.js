@@ -3,7 +3,13 @@ import { useState } from "react";
 import "../../styles/FormModal.scss";
 import axios from "axios";
 
-export default function FormModal({ open, cInfo, setCardInfo, onClose }) {
+export default function FormModal({
+  open,
+  cInfo,
+  setCardInfo,
+  onClose,
+  onModalSubmit,
+}) {
   const [cardName, setCardName] = useState("");
   const [cardDesc, setCardDesc] = useState("");
 
@@ -30,6 +36,8 @@ export default function FormModal({ open, cInfo, setCardInfo, onClose }) {
       .catch((error) => {
         alert("error send data", error);
       });
+
+    onModalSubmit();
 
     onClose(!open);
   };

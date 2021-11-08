@@ -8,11 +8,19 @@ const Workspace = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [cardInfo, setCardInfo] = useState([]);
 
+  let userToken = localStorage.getItem("tokenLogin");
+
   useEffect(() => {
-    axios.get("http://localhost:5005/workspace").then((response) => {
+    handleSubmitForm()
+  }, []);
+
+  const handleSubmitForm = () => {
+    axios
+    .get(`http://localhost:5005/workspace/user/${userToken}`)
+    .then((response) => {
       setCardInfo(response.data);
     });
-  }, [cardInfo]);
+  }
 
   return (
     <div className="workspace">
@@ -27,6 +35,7 @@ const Workspace = () => {
         cInfo={cardInfo}
         setCardInfo={() => setCardInfo(cardInfo)}
         onClose={() => setIsOpen(false)}
+        onModalSubmit={handleSubmitForm}
       />
 
       <div className="browser">

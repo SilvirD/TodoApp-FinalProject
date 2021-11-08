@@ -79,9 +79,8 @@ const Login = () => {
   // }
 
   const _handleSubmit = async () => {
-    if(checkInputEmail(email)||
-    checkInputPassword(password)){
-    }else {
+    if (checkInputEmail(email) || checkInputPassword(password)) {
+    } else {
       await axios
         .post("http://localhost:5005/login", userInfo)
         .then((response) => {
@@ -93,7 +92,6 @@ const Login = () => {
           alert("error send data", error);
         });
     }
-  
   };
 
   return (
