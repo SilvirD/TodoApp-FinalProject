@@ -1,23 +1,24 @@
 .workspace {
   @apply flex flex-col p-4;
   .toolbar {
-		@apply ml-auto;
+    @apply ml-auto;
     .btn-create {
       @apply bg-green-500 text-white rounded-md p-4;
     }
   }
 
   .browser {
-		h1 {
-			@apply font-bold text-4xl;
-		}
+    h1 {
+      @apply font-bold text-4xl mt-5;
+    }
 
     .bar {
-			@apply my-4 inline-grid gap-4;
-			grid-template-columns: repeat(auto-fill, minmax(370px, 1fr));
+      @apply my-4 grid gap-4;
+      grid-template-columns: repeat(auto-fill, minmax(384px, 1fr));
 
       .card {
         @apply bg-gray-200 rounded-md p-4 cursor-pointer;
+
         h1 {
           @apply font-bold text-3xl;
         }

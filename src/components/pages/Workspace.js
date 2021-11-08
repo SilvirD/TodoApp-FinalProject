@@ -1,4 +1,4 @@
-import "../../dist/styles/Workspace.css";
+import "../../styles/Workspace.scss";
 import { useState, useEffect } from "react";
 import FormModal from "../Workspace/FormModal";
 import Card from "../Workspace/Card";

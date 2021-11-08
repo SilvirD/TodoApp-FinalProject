@@ -1,6 +1,6 @@
 import ReactDom from "react-dom";
-import { useState, useEffect } from "react";
-import "../../dist/styles/FormModal.css";
+import { useState } from "react";
+import "../../styles/FormModal.scss";
 import axios from "axios";
 
 export default function FormModal({ open, cInfo, setCardInfo, onClose }) {
@@ -19,6 +19,8 @@ export default function FormModal({ open, cInfo, setCardInfo, onClose }) {
       desc: cardDesc,
       userToken: localStorage.getItem("tokenLogin"),
     };
+
+    console.log(newCard);
 
     await axios
       .post("http://localhost:5005/workspace/addWorkspace", newCard)

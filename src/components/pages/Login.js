@@ -28,17 +28,17 @@ const Login = () => {
   const isValidatePassword = validatePassword(password);
 
   // fetch data localhost
-  useEffect(() => {
-    axios
-      .get("http://localhost:5005/user")
-      .then((response) => {
-        let user = response.data;
-        setRepo(user);
-      })
-      .catch((error) => {
-        alert("error fetch data", error);
-      });
-  }, []);
+  // useEffect(() => {
+  //   axios
+  //     .get("http://localhost:5005/user")
+  //     .then((response) => {
+  //       let user = response.data;
+  //       setRepo(user);
+  //     })
+  //     .catch((error) => {
+  //       alert("error fetch data", error);
+  //     });
+  // }, []);
 
   function validateEmail(email) {
     const re =
@@ -72,26 +72,28 @@ const Login = () => {
       return 1;
     }
   }
-  function checkLogin(inpEmail, inpPassword) {
-    return repo.find(
-      ({ email, password }) => email === inpEmail && password === inpPassword
-    );
-  }
+  // function checkLogin(inpEmail, inpPassword) {
+  //   return repo.find(
+  //     ({ email, password }) => email === inpEmail && password === inpPassword
+  //   );
+  // }
 
   const _handleSubmit = async () => {
-    checkInputEmail(email);
-    checkInputPassword(password);
+    if(checkInputEmail(email)||
+    checkInputPassword(password)){
+    }else {
+      await axios
+        .post("http://localhost:5005/login", userInfo)
+        .then((response) => {
+          localStorage.setItem("tokenLogin", response.data);
+          alert("login successfully");
+          history.push("/");
+        })
+        .catch((error) => {
+          alert("error send data", error);
+        });
+    }
   
-    await axios
-      .post("http://localhost:5005/login", userInfo)
-      .then((response) => {
-        localStorage.setItem("tokenLogin", response.data);
-        alert("login successfully");
-        history.push("/");
-      })
-      .catch((error) => {
-        alert("error send data", error);
-      });
   };
 
   return (
