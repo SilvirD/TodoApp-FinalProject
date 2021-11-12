@@ -1,7 +1,7 @@
-import Register from "./components/register";
-import Login from "./components/login";
 import NavBar from "./components/NavBar/NavBar";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import Login from "./components/pages/Login";
+import Register from "./components/pages/Register";
 import Workspace from "./components/pages/Workspace";
 import Recent from "./components/pages/Recent";
 import Bookmark from "./components/pages/Bookmark";
@@ -15,21 +15,12 @@ function App() {
           <NavBar />
 
           <Switch>
-            <Route exact path="/">
-              <Workspace />
-            </Route>
-            <Route exact path="/recent">
-              <Recent />
-            </Route>
-            <Route exact path="/bookmark">
-              <Bookmark />
-            </Route>
-            <Route exact path="/notification">
-              <Notification />
-            </Route>
-
-            <Route path="/login" exact component={Login} />
-            <Route path="/register" exact component={Register} />
+            <Route exact path="/" component={Workspace} />
+            <Route exact path="/recent" component={Recent} />
+            <Route exact path="/bookmark" component={Bookmark} />
+            <Route exact path="/notification" component={Notification}/>
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/register" component={Register} />
           </Switch>
         </div>
       </Router>
