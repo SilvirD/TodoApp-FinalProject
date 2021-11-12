@@ -14,12 +14,14 @@ const Workspace = () => {
     handleSubmitForm()
   }, []);
 
-  const handleSubmitForm = () => {
-    axios
-    .get(`http://localhost:5005/workspace/user/${userToken}`)
-    .then((response) => {
-      setCardInfo(response.data);
-    });
+  const handleSubmitForm = async () => {
+    if (userToken) {
+      await axios
+        .get(`http://localhost:5005/workspace/user/${userToken}`)
+        .then((response) => {
+          setCardInfo(response.data);
+        });
+    }
   }
 
   return (
