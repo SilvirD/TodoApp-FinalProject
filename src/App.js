@@ -7,6 +7,8 @@ import Recent from "./components/pages/Recent";
 import Bookmark from "./components/pages/Bookmark";
 import Notification from "./components/pages/Notification";
 
+import Table from "./components/Table/Table";
+
 function App() {
   return (
     <>
@@ -18,7 +20,7 @@ function App() {
             <Route exact path="/" component={Workspace} />
             <Route exact path="/recent" component={Recent} />
             <Route exact path="/bookmark" component={Bookmark} />
-            <Route exact path="/notification" component={Notification}/>
+            <Route exact path="/notification" component={Table} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/register" component={Register} />
           </Switch>
