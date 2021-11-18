@@ -1,17 +1,16 @@
-import { Modal, Button, Checkbox, Progress } from "antd";
-
 import {
-  PlusCircleFilled,
   AlignLeftOutlined,
-  UnorderedListOutlined,
   CheckSquareOutlined,
-  UserAddOutlined,
   FieldTimeOutlined,
+  PlusCircleFilled,
+  UnorderedListOutlined,
+  UserAddOutlined,
 } from "@ant-design/icons";
-
+import { Button, Checkbox, Modal, Progress } from "antd";
 import "antd/dist/antd.css";
-
+import { useEffect, useState, useMemo } from "react";
 import "./ItemDialog.scss";
+import { workList } from "./Mockdata";
 
 export default function ItemDialog({
   isDialogOpen,
@@ -19,6 +18,21 @@ export default function ItemDialog({
   ...remains
 }) {
   const { title, content, longContent } = remains;
+
+  const [works, setWorks] = useState(workList);
+
+  const percent = useMemo(() => {
+    const checkedTask = works.reduce(
+      (calc, curr) => (curr.checked ? calc + 1 : calc),
+      0
+    );
+    return Math.floor((checkedTask / works.length) * 100);
+  }, [works]);
+
+  const handleDeleteWork = (id) => {
+    setWorks((prevWorks) => prevWorks.filter((item) => item.id !== id));
+  };
+
   return (
     <Modal
       visible={isDialogOpen}
@@ -34,6 +48,7 @@ export default function ItemDialog({
           Submit
         </Button>,
       ]}
+      style={{ top: 20 }}
     >
       <div className="Content">
         <div className="Content__main">
@@ -79,23 +94,31 @@ export default function ItemDialog({
               <span id="btnDelete">Delete</span>
             </div>
             <div className="Content__main__work__detail">
-              <Progress percent={0} />
-              <div className="Content__main__work__detail__item">
-                <div className="Content__main__work__detail__item__checkbox">
-                  <Checkbox></Checkbox>
-                </div>
-                <div className="Content__main__work__detail__item__text">
-                  <p>work1</p>
-                </div>
-              </div>
-              <div className="Content__main__work__detail__item">
-                <div className="Content__main__work__detail__item__checkbox">
-                  <Checkbox></Checkbox>
-                </div>
-                <div className="Content__main__work__detail__item__text">
-                  <p>work2</p>
-                </div>
-              </div>
+              <Progress percent={percent} />
+              {works.map((work, index) => {
+                return (
+                  <div className="Content__main__work__detail__item">
+                    <div className="Content__main__work__detail__item__checkbox">
+                      <Checkbox
+                        checked={work.checked}
+                        onChange={(e) => {
+                          work.checked = !work.checked;
+                          setWorks([...works]);
+                        }}
+                      />
+                    </div>
+                    <div className="Content__main__work__detail__item__text">
+                      <p>{work.content}</p>
+                    </div>
+                    <Button
+                      type="button"
+                      onClick={() => handleDeleteWork(work.id)}
+                    >
+                      X
+                    </Button>
+                  </div>
+                );
+              })}
             </div>
           </div>
 
