@@ -6,7 +6,7 @@ import Button from "./Button";
 const NavBar = () => {
   const ICONSIZE = 24;
   const [expandState, setExpandState] = useState(false);
-  const [navlinks, setNavLink] = useState("navlinks");
+  const [navlinks, setNavLink] = useState("z-50 navlinks");
 
   const toggleMobileMenu = () => {
     setExpandState(!expandState);
@@ -14,7 +14,7 @@ const NavBar = () => {
     if (expandState) {
       setNavLink("navlinks");
     } else {
-      setNavLink("navlinks active");
+      setNavLink(navlinks + " active");
     }
   };
 

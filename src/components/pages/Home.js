@@ -1,6 +1,6 @@
 import Section from "../Home/Section"
 import Footer from '../Home/Footer'
-import content from '../Home/Content'
+import content from '../Home/content'
 
 const Home = () => {
 	return (
@@ -8,7 +8,7 @@ const Home = () => {
 			{
 				content.map(element => {
 					return (
-						<Section haveButton={element.haveButton} blueBg={element.haveBlueBg} flexReverse={element.flexReverse}
+						<Section haveButton={element.haveButton} blueBg={element.haveBlueBg} reverse={element.flexReverse}
 							svgLink={element.svg} text={element.title} desc={element.desc} />
 					)
 				})
