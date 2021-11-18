@@ -6,6 +6,7 @@ import Workspace from "./components/pages/Workspace";
 import Recent from "./components/pages/Recent";
 import Bookmark from "./components/pages/Bookmark";
 import Notification from "./components/pages/Notification";
+import Home from "./components/pages/Home";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
 
           <Switch>
             <Route exact path="/" component={Workspace} />
+            <Route exact path="/home" component={Home}/>
             <Route exact path="/recent" component={Recent} />
             <Route exact path="/bookmark" component={Bookmark} />
             <Route exact path="/notification" component={Notification}/>
