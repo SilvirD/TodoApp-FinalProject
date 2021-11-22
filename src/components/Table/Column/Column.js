@@ -1,14 +1,25 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import ColumnItem from "../Items/ColumnItem";
 import ItemDialog from "../Items/ItemDialog";
 import { tableMockData } from "../TableItem_mockdata";
 import "./Column.scss";
+import axios from "axios";
 
-export default function Column({ colIndex }) {
+const currentOrder = tableMockData.map((item) => item.id);
+
+export default function Column({ colIndex, colId }) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [dialogContent, setDialogContent] = useState();
   const [items, setItems] = useState(tableMockData);
+
+  const [order, setOrder] = useState(currentOrder);
+
+  useEffect(() => {
+    axios.get(`localhost:5005/card/${colId}`).then((response) => {
+      console.log("----------", response);
+    });
+  }, []);
 
   const handleOpenDialog = (dialogData) => {
     setIsDialogOpen(!isDialogOpen);
@@ -25,6 +36,8 @@ export default function Column({ colIndex }) {
     const newItem = Array.from(items);
     const [reorderedItem] = newItem.splice(result.source.index, 1);
     newItem.splice(result.destination.index, 0, reorderedItem);
+
+    setOrder(() => newItem.map((item) => item.id));
 
     setItems(newItem);
   };
