@@ -10,22 +10,26 @@ const MobileMenu = ({ mobileMenu, setMobileMenu }) => {
 		}
 	}
 
+	const handleLink = () => {
+		setMobileMenu(!mobileMenu);
+	}
+
 	return ReactDom.createPortal(
 		<>
 			{mobileMenu && <div className="menudialog">
 				<div>
 					<ul>
 						<li>
-							<Link to="/">Không gian</Link>
+							<Link to="/" onClick={_ => handleLink()}>Không gian</Link>
 						</li>
 						<li>
-							<Link to="/recent">Gần đây</Link>
+							<Link to="/recent" onClick={_ => handleLink()}>Gần đây</Link>
 						</li>
 						<li>
-							<Link to="/bookmark">Đánh dấu</Link>
+							<Link to="/bookmark" onClick={_ => handleLink()}>Đánh dấu</Link>
 						</li>
 						<li>
-							<Link to="/notification">Thông báo</Link>
+							<Link to="/notification" onClick={_ => handleLink()}>Thông báo</Link>
 						</li>
 					</ul>
 					<center>
