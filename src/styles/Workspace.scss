@@ -17,7 +17,7 @@
       grid-template-columns: repeat(auto-fill, minmax(269px, 1fr));
 
       .card {
-        @apply bg-gray-100 rounded-sm p-4 cursor-pointer hover:shadow-xl transition-shadow duration-500;
+        @apply bg-gray-100 rounded-sm cursor-pointer hover:shadow-xl transition-shadow duration-500;
 
         h1 {
           @apply font-bold text-3xl;
