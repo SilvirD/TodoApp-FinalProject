@@ -6,13 +6,18 @@ import Workspace from "./components/pages/Workspace";
 import Recent from "./components/pages/Recent";
 import Bookmark from "./components/pages/Bookmark";
 import Notification from "./components/pages/Notification";
+import UserDialog from './components/common/UserDialog'
+import { useState } from "react";
 
 function App() {
+  const [userModal, setUserModal] = useState(false);
+
   return (
     <>
       <Router>
         <div className="App">
-          <NavBar />
+          <NavBar userModal={userModal} setUserModal={setUserModal} />
+          <UserDialog userModal={userModal} setUserModal={setUserModal} />
 
           <Switch>
             <Route exact path="/" component={Workspace} />

@@ -3,20 +3,28 @@ import { AiOutlineNumber, AiOutlineUser } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import Button from "./Button";
 
-const NavBar = () => {
+const NavBar = ({ userModal, setUserModal }) => {
   const ICONSIZE = 24;
   const [expandState, setExpandState] = useState(false);
   const [navlinks, setNavLink] = useState("navlinks");
 
-  const toggleMobileMenu = () => {
+  const toggleMobileMenu = (expandState) => {
+    console.log(expandState)
     setExpandState(!expandState);
 
     if (expandState) {
       setNavLink("navlinks");
     } else {
-      setNavLink("navlinks active");
+      setNavLink("navlinks activebar");
     }
   };
+
+  const toggleProfileDialog = (userModal) => {
+    console.log(userModal)
+    if (!userModal) {
+      setUserModal(!userModal)
+    }
+  }
 
   return (
     <nav className="navbar">
@@ -42,10 +50,10 @@ const NavBar = () => {
       </div>
 
       <div className="flex absolute top-1 right-3">
-        <div className="profile">
+        <div onClick={_ => toggleProfileDialog(userModal)} className="profile">
           <AiOutlineUser size={ICONSIZE} />
         </div>
-        <div onClick={toggleMobileMenu} className="menu">
+        <div onClick={_ => toggleMobileMenu(expandState)} className="menu">
           <Button expandState={expandState} />
         </div>
       </div>
