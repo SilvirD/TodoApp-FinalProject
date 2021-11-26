@@ -1,0 +1,28 @@
+.Table {
+  padding: 16px;
+  &__Title {
+    span {
+      vertical-align: middle;
+    }
+    span:first-child {
+      padding-top: 5px;
+    }
+    span:last-child {
+      font-size: 2.25rem;
+      font-weight: 700;
+    }
+  }
+  &__Content {
+    display: flex;
+    flex-direction: row;
+    &__Item {
+      background-color: whitesmoke;
+      border-radius: 5px;
+      padding: 4px;
+      width: 25%;
+      span:hover {
+        color: yellow;
+      }
+    }
+  }
+}
