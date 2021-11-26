@@ -8,16 +8,17 @@ import axios from "axios";
 
 const currentOrder = tableMockData.map((item) => item.id);
 
-export default function Column({ colIndex, colId }) {
+export default function Column({ colIndex, colId, colName, cardItems }) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [dialogContent, setDialogContent] = useState();
-  const [items, setItems] = useState(tableMockData);
+  const [items, setItems] = useState([]);
 
   const [order, setOrder] = useState(currentOrder);
 
   useEffect(() => {
-    axios.get(`localhost:5005/card/${colId}`).then((response) => {
-      console.log("----------", response);
+    axios.get(`http://localhost:5005/card/${colId}`).then((response) => {
+      const { data } = response.data;
+      setItems(data);
     });
   }, []);
 
@@ -36,9 +37,7 @@ export default function Column({ colIndex, colId }) {
     const newItem = Array.from(items);
     const [reorderedItem] = newItem.splice(result.source.index, 1);
     newItem.splice(result.destination.index, 0, reorderedItem);
-
-    setOrder(() => newItem.map((item) => item.id));
-
+    setOrder(() => newItem.map((item) => item._id));
     setItems(newItem);
   };
 
@@ -53,20 +52,21 @@ export default function Column({ colIndex, colId }) {
               ref={provided.innerRef}
             >
               <div className="Column__header">
-                <div className="Column__header__main">ABCDEF</div>
+                <div className="Column__header__main">{colName}</div>
                 <div className="Column__header__sub"></div>
               </div>
               <div className="Column__body">
                 {items.map((item, index) => {
-                  const { id, title, content } = item;
+                  const { _id, card_name, card_desc, users_in_card } = item;
                   return (
                     <ColumnItem
                       itemIndex={index}
-                      itemKey={id}
-                      key={id}
-                      title={title}
-                      content={content}
+                      itemKey={_id}
+                      key={_id}
+                      title={card_name}
+                      content={card_desc}
                       onOpenDialog={handleOpenDialog}
+                      members={users_in_card}
                     />
                   );
                 })}

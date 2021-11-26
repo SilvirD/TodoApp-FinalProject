@@ -12,12 +12,14 @@ export default function ColumnItem({
   onOpenDialog,
   itemIndex,
   itemKey,
+  members,
 }) {
   const handleDialog = () => {
     onOpenDialog({
       title,
       content,
       longContent,
+      members,
     });
   };
 

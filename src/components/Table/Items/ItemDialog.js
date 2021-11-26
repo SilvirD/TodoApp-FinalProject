@@ -8,7 +8,7 @@ import {
 } from "@ant-design/icons";
 import { Button, Checkbox, Modal, Progress } from "antd";
 import "antd/dist/antd.css";
-import { useEffect, useState, useMemo } from "react";
+import { useMemo, useState } from "react";
 import "./ItemDialog.scss";
 import { workList } from "./Mockdata";
 
@@ -17,7 +17,7 @@ export default function ItemDialog({
   onOpenCloseDialog,
   ...remains
 }) {
-  const { title, content, longContent } = remains;
+  const { title, content, longContent, members = [] } = remains;
 
   const [works, setWorks] = useState(workList);
 
@@ -57,14 +57,14 @@ export default function ItemDialog({
               <span>Member</span>
             </div>
             <div className="Content__main__members__list">
-              <img
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcKj1fruVtsXkI7teuyk4KqBoKr9SVaEA7IA&usqp=CAU"
-                alt=""
-              />
-              <img
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcKj1fruVtsXkI7teuyk4KqBoKr9SVaEA7IA&usqp=CAU"
-                alt=""
-              />
+              {members.map((member) => {
+                return (
+                  <img
+                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcKj1fruVtsXkI7teuyk4KqBoKr9SVaEA7IA&usqp=CAU"
+                    alt=""
+                  />
+                );
+              })}
               <PlusCircleFilled
                 style={{ fontSize: "200%", color: "rgb(181, 181, 181)" }}
               />

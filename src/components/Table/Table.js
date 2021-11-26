@@ -17,7 +17,16 @@ export default function Table() {
       style={{ display: "flex", margin: "10px", overflowX: "auto" }}
     >
       {columns.map((column, index) => {
-        return <Column key={column._id} colIndex={index} colId={column._id} />;
+        const { _id, column_name, card_IDs } = column;
+        return (
+          <Column
+            key={_id}
+            colIndex={index}
+            colId={_id}
+            colName={column_name}
+            cardItems={card_IDs}
+          />
+        );
       })}
     </div>
   );
