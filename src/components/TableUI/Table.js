@@ -37,6 +37,18 @@ function Table() {
             <h1>table test 3</h1>
             <StarOutlined />
           </div>
+          <div className="Table__Content__Item">
+            <h1>table test 4</h1>
+            <StarOutlined />
+          </div>
+          <div className="Table__Content__Item">
+            <h1>table test 5</h1>
+            <StarOutlined />
+          </div>
+          <div className="Table__Content__Item">
+            <h1>table test 6</h1>
+            <StarOutlined />
+          </div>
         </div>
       </div>
     </>

@@ -13,15 +13,26 @@
     }
   }
   &__Content {
-    display: flex;
-    flex-direction: row;
+    @apply my-4 grid gap-4;
+    grid-template-columns: repeat(auto-fill, minmax(269px, 1fr));
     &__Item {
-      background-color: whitesmoke;
-      border-radius: 5px;
-      padding: 4px;
-      width: 25%;
-      span:hover {
-        color: yellow;
+      @apply bg-gray-100 rounded-sm p-4 cursor-pointer;
+      span {
+        text-align: right;
+        width: 100%;
+        transform: translateX(5%);
+        opacity: 0;
+      }
+      svg:hover {
+        color: rgb(255, 146, 4);
+      }
+    }
+    &__Item:hover {
+      @apply hover:shadow-xl transition-shadow duration-500;
+      span {
+        opacity: 1;
+        transform: translateX(0%);
+        transition-duration: 0.5s;
       }
     }
   }
