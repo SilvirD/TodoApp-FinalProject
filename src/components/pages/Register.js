@@ -1,7 +1,7 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import FormInput from "../common/FormInput";
+import { apiClient } from "../../helper/api_client";
 
 const initialValue = {
   name: "",
@@ -27,8 +27,8 @@ const Register = () => {
 
   // fetch data localhost
   useEffect(() => {
-    axios
-      .get("http://localhost:5005/user")
+    apiClient
+      .get("/user")
       .then((response) => {
         let user = response.data;
         setRepo(user);
@@ -56,8 +56,8 @@ const Register = () => {
         email: email,
         password: password,
       };
-      axios
-        .post("http://localhost:5005/user/addUser", dataRegister)
+      apiClient
+        .post("/user/addUser", dataRegister)
         .then((response) => {
           console.log(response);
           alert("add user successfully");

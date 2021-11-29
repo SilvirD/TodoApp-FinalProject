@@ -1,5 +1,11 @@
+import Table from "../TableUI/Table";
+
 const Recent = () => {
-  return <div>Recent</div>;
+  return (
+    <>
+      <Table></Table>
+    </>
+  );
 };
 
 export default Recent;

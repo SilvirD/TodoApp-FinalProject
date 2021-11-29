@@ -2,6 +2,7 @@ import { useState } from "react";
 import { AiOutlineNumber, AiOutlineUser } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import Button from "./Button";
+import "./NavBar.scss";
 
 const NavBar = () => {
   const ICONSIZE = 24;

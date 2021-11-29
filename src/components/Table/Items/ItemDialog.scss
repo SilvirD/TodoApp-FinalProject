@@ -1,0 +1,163 @@
+.Content {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+
+  &__main {
+    box-sizing: border-box;
+    width: 75%;
+    margin-right: 5px;
+
+    &__members {
+      margin-bottom: 32px;
+      &__title {
+        span {
+          font-weight: 600;
+          size: 16px;
+          line-height: 20px;
+          vertical-align: middle;
+          margin-left: 30px;
+        }
+      }
+      &__list {
+        margin: 5px 0 0 30px;
+        img {
+          cursor: pointer;
+          display: inline-block;
+          width: 32px;
+          height: 32px;
+          border-radius: 50%;
+          margin: 0 1px;
+        }
+        span {
+          cursor: pointer;
+          margin-left: 3px;
+          width: 32px;
+          height: 32px;
+        }
+      }
+    }
+
+    &__desc {
+      margin-bottom: 32px;
+      &__title {
+        span {
+          vertical-align: middle;
+          margin: 0 10px 0 0;
+        }
+        #title {
+          font-weight: 600;
+          size: 16px;
+          line-height: 20px;
+        }
+        #btnEdit {
+          background-color: rgb(181, 181, 181);
+          padding: 6px 12px;
+          cursor: pointer;
+          border-radius: 2px;
+        }
+      }
+      &__detail {
+        p {
+          margin: 5px 30px;
+        }
+      }
+    }
+
+    &__work {
+      margin-bottom: 32px;
+
+      &__title {
+        display: flex;
+        span {
+          vertical-align: middle;
+          margin: 0 10px 0 0;
+        }
+        #btnDelete {
+          margin-left: auto;
+          background-color: rgb(181, 181, 181);
+          padding: 6px 12px;
+          cursor: pointer;
+          border-radius: 2px;
+        }
+      }
+      &__detail {
+        &__item {
+          display: flex;
+          flex-direction: row;
+
+          button {
+            padding: 5px;
+            margin-left: auto;
+          }
+
+          &__text {
+            margin-left: 10px;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+
+    &__actions {
+      &__title {
+        display: flex;
+        span {
+          vertical-align: middle;
+          margin: 0 10px 0 0;
+        }
+        #btnHide {
+          margin-left: auto;
+          background-color: rgb(181, 181, 181);
+          padding: 6px 12px;
+          cursor: pointer;
+          border-radius: 2px;
+        }
+      }
+      &__detail {
+        &__content {
+          display: flex;
+          flex-direction: row;
+          margin: 5px 0;
+          img {
+            cursor: pointer;
+            display: inline-block;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+          }
+          &__time {
+            margin-left: 10px;
+            p {
+              padding: 0;
+              margin: 0;
+            }
+          }
+        }
+      }
+    }
+  }
+  &__sidebar {
+    box-sizing: border-box;
+    width: 25%;
+    margin-left: 5px;
+    span {
+      margin: 2px;
+    }
+    &__button {
+      display: flex;
+      flex-direction: column;
+      &__item {
+        background-color: rgb(181, 181, 181);
+        cursor: pointer;
+        border-radius: 2px;
+        text-align: left;
+        padding: 6px 12px;
+        margin: 3px 0;
+        span {
+          vertical-align: middle;
+        }
+      }
+    }
+  }
+}
