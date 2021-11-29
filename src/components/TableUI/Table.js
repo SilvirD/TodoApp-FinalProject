@@ -14,23 +14,56 @@ import TableItem from "./TableItem";
 import { useHistory, useParams } from "react-router";
 
 function Table() {
-  const [tableItems, setTableItems] = useState([]);
   const history = useHistory();
   const params = useParams();
   const workspaceId = params.id;
+  const [tableItems, setTableItems] = useState([]);
+
+  const [newTable, setNewTable] = useState({});
+  const [openModal, setOpenModal] = useState(false);
+  const [tableTitle, setTableTitle] = useState("");
 
   useEffect(() => {
     apiClient.get(`/table/${workspaceId}`).then((response) => {
       const { data } = response.data;
       setTableItems(data);
     });
-  }, []);
+  }, [newTable]);
+
+  const handleMarkedTable = (tableId, currStar) => {
+    apiClient
+      .patch(`/table/editTable/${tableId}`, {
+        star: !currStar,
+      })
+      .then((response) => {
+        setNewTable(response.data);
+      });
+  };
+
+  const handleOpenDialog = () => {
+    setOpenModal(!openModal);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenModal();
+    setTableTitle();
+  };
+
+  const handleCreateTable = () => {
+    apiClient
+      .post(`table/addTable`, {
+        workspace_ID: workspaceId,
+        name: tableTitle,
+        star: false,
+      })
+      .then((response) => setNewTable(response.data));
+
+    handleCloseDialog();
+  };
 
   const handlePageChange = (id) => {
     history.push(`/notification/${id}`);
   };
-
-  console.log("tableItems", tableItems);
 
   return (
     <>
@@ -50,15 +83,12 @@ function Table() {
                   tableName={table_name}
                   isTableChecked={star}
                   members={users_in_table}
+                  onMarkedTable={() => handleMarkedTable(_id, star)}
                   onPageChange={() => handlePageChange(_id)}
                 />
               );
             }
           })}
-          {/* <div className="Table__Content__Item__Star">
-            <h1>table star</h1>
-            <StarFilled />
-          </div> */}
         </div>
       </div>
       <div className="Table">
@@ -67,31 +97,6 @@ function Table() {
           <span> Bảng cá nhân</span>
         </div>
         <div className="Table__Content">
-          {/* <div className="Table__Content__Item">
-            <h1>table test 1</h1>
-            <StarOutlined />
-          </div>
-          <div className="Table__Content__Item">
-            <h1>table test 2</h1>
-            <StarOutlined />
-          </div>
-          <div className="Table__Content__Item">
-            <h1>table test 3</h1>
-            <StarOutlined />
-          </div>
-          <div className="Table__Content__Item">
-            <h1>table test 4</h1>
-            <StarOutlined />
-          </div>
-          <div className="Table__Content__Item">
-            <h1>table test 5 sdahgf agsdya asydgagstd ashuduas</h1>
-            <StarOutlined />
-          </div>
-          <div className="Table__Content__Item">
-            <h1>table test 6has d hasid hasdausdhas sada</h1>
-            <StarOutlined />
-          </div> */}
-
           {tableItems.map((item) => {
             const { _id, star, table_name, users_in_table } = item;
             return (
@@ -101,11 +106,12 @@ function Table() {
                 tableName={table_name}
                 isTableChecked={star}
                 members={users_in_table}
+                onMarkedTable={() => handleMarkedTable(_id, star)}
                 onPageChange={() => handlePageChange(_id)}
               />
             );
           })}
-          <div className="Table__Content__Item">
+          <div className="Table__Content__Item" onClick={handleOpenDialog}>
             <p>
               <span>Tạo bảng mới </span>
               <PlusOutlined />
@@ -113,6 +119,26 @@ function Table() {
           </div>
         </div>
       </div>
+
+      <Modal
+        visible={openModal}
+        title="Create new table"
+        onCancel={handleCloseDialog}
+        footer={[
+          <Button key="back" onClick={handleCloseDialog}>
+            Cancel
+          </Button>,
+          <Button key="submit" type="primary" onClick={handleCreateTable}>
+            Submit
+          </Button>,
+        ]}
+      >
+        <input
+          type="text"
+          value={tableTitle}
+          onChange={(e) => setTableTitle(e.target.value)}
+        />
+      </Modal>
     </>
   );
 }
