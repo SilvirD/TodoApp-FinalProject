@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import { apiClient } from "../../../helper/api_client";
 import ColumnItem from "../Items/ColumnItem";
 import ItemDialog from "../Items/ItemDialog";
-import { tableMockData } from "../TableItem_mockdata";
 import "./Column.scss";
-import axios from "axios";
 
 export default function Column({ colIndex, colId, colName, cardItems }) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -12,7 +11,7 @@ export default function Column({ colIndex, colId, colName, cardItems }) {
   const [items, setItems] = useState(cardItems);
 
   useEffect(() => {
-    axios.patch(`http://localhost:5005/column/editColumn/${colId}`, {
+    apiClient.patch(`/column/editColumn/${colId}`, {
       card_IDs: items.map((item) => ({
         card_ID: item.card_ID._id,
       })),

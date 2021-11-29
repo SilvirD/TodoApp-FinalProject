@@ -11,18 +11,24 @@ import "./Table.scss";
 import { apiClient } from "../../helper/api_client";
 
 import TableItem from "./TableItem";
+import { useHistory, useParams } from "react-router";
 
 function Table() {
   const [tableItems, setTableItems] = useState([]);
+  const history = useHistory();
+  const params = useParams();
+  const workspaceId = params.id;
 
   useEffect(() => {
-    apiClient.get(`/table/618b9333a179ba01fc49768c`).then((response) => {
+    apiClient.get(`/table/${workspaceId}`).then((response) => {
       const { data } = response.data;
       setTableItems(data);
     });
   }, []);
 
-  console.log(tableItems);
+  const handlePageChange = (id) => {
+    history.push(`/notification/${id}`);
+  };
 
   return (
     <>
@@ -78,6 +84,7 @@ function Table() {
                 tableName={table_name}
                 isTableChecked={star}
                 members={users_in_table}
+                onPageChange={() => handlePageChange(_id)}
               />
             );
           })}
