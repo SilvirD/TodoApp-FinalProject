@@ -6,32 +6,68 @@ import {
   UnorderedListOutlined,
   UserAddOutlined,
 } from "@ant-design/icons";
-import { Button, Checkbox, Modal, Progress } from "antd";
+import { Button, Checkbox, Modal, Progress, DatePicker } from "antd";
 import "antd/dist/antd.css";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import "./ItemDialog.scss";
-import { workList } from "./Mockdata";
+import moment from "moment";
+
+import { apiClient } from "../../../helper/api_client";
 
 export default function ItemDialog({
   isDialogOpen,
   onOpenCloseDialog,
   ...remains
 }) {
-  const { title, content, longContent, members = [] } = remains;
+  const { itemKey, title, content, longContent, members = [] } = remains;
 
-  const [works, setWorks] = useState(workList);
+  const [taskList, setTaskList] = useState([]);
+  const [subTasks, setSubTasks] = useState([]);
+  const [deadLine, setDeadline] = useState("");
+
+  useEffect(() => {
+    if (itemKey) {
+      apiClient.get(`/taskList/${itemKey}`).then((response) => {
+        const { data } = response.data;
+        setTaskList(data);
+      });
+    }
+  }, [itemKey]);
+
+  // useEffect(() => {
+  //   taskList.map((task) => {
+  //     return setSubTasks(task.subTask_IDs);
+  //   });
+  // }, [taskList]);
+
+  useEffect(() => {
+    if (itemKey) {
+      apiClient.patch(`card/editCard/${itemKey}`, {
+        card_deadline: {
+          deadline: deadLine,
+        },
+      });
+    }
+  }, [deadLine]);
 
   const percent = useMemo(() => {
-    const checkedTask = works.reduce(
+    const checkedTask = subTasks.reduce(
       (calc, curr) => (curr.checked ? calc + 1 : calc),
       0
     );
-    return Math.floor((checkedTask / works.length) * 100);
-  }, [works]);
+    return Math.floor((checkedTask / subTasks.length) * 100);
+  }, [subTasks]);
 
   const handleDeleteWork = (id) => {
-    setWorks((prevWorks) => prevWorks.filter((item) => item.id !== id));
+    // setSubTasks((prevWorks) => prevWorks.filter((item) => item.id !== id));
+    // call api delete
   };
+
+  const handleDateChange = (date, dateString) => {
+    setDeadline(moment.utc(dateString));
+  };
+
+  console.log("--------", deadLine);
 
   return (
     <Modal
@@ -71,6 +107,10 @@ export default function ItemDialog({
             </div>
           </div>
 
+          {/* <div className="Content__main__deadline">
+            <div>Deadline: {deadLine}</div>
+          </div> */}
+
           <div className="Content__main__desc">
             <div className="Content__main__desc__title">
               <AlignLeftOutlined style={{ fontSize: "150%" }} />
@@ -88,38 +128,45 @@ export default function ItemDialog({
           </div>
 
           <div className="Content__main__work">
-            <div className="Content__main__work__title">
-              <CheckSquareOutlined style={{ fontSize: "150%" }} />
-              <span>Works</span>
-              <span id="btnDelete">Delete</span>
-            </div>
-            <div className="Content__main__work__detail">
-              <Progress percent={percent} />
-              {works.map((work, index) => {
-                return (
-                  <div className="Content__main__work__detail__item">
-                    <div className="Content__main__work__detail__item__checkbox">
-                      <Checkbox
-                        checked={work.checked}
-                        onChange={(e) => {
-                          work.checked = !work.checked;
-                          setWorks([...works]);
-                        }}
-                      />
-                    </div>
-                    <div className="Content__main__work__detail__item__text">
-                      <p>{work.content}</p>
-                    </div>
-                    <Button
-                      type="button"
-                      onClick={() => handleDeleteWork(work.id)}
-                    >
-                      X
-                    </Button>
+            {taskList.map((task) => {
+              const { subTask_IDs } = task;
+              return (
+                <>
+                  <div className="Content__main__work__title">
+                    <CheckSquareOutlined style={{ fontSize: "150%" }} />
+                    <span>Works</span>
+                    <span id="btnDelete">Delete</span>
                   </div>
-                );
-              })}
-            </div>
+                  <div className="Content__main__work__detail">
+                    <Progress percent={percent} />
+                    {subTask_IDs.map((work, index) => {
+                      return (
+                        <div className="Content__main__work__detail__item">
+                          <div className="Content__main__work__detail__item__checkbox">
+                            <Checkbox
+                              checked={work.checked}
+                              onChange={(e) => {
+                                work.checked = !work.checked;
+                                setSubTasks([...subTask_IDs]);
+                              }}
+                            />
+                          </div>
+                          <div className="Content__main__work__detail__item__text">
+                            <p>{work.content}</p>
+                          </div>
+                          <Button
+                            type="button"
+                            onClick={() => handleDeleteWork(work.id)}
+                          >
+                            X
+                          </Button>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </>
+              );
+            })}
           </div>
 
           <div className="Content__main__actions">
@@ -165,7 +212,7 @@ export default function ItemDialog({
             </div>
             <div className="Content__sidebar__button__item">
               <FieldTimeOutlined style={{ fontSize: "120%" }} />
-              <span>Add deadline</span>
+              <DatePicker value={deadLine} onChange={handleDateChange} />
             </div>
           </div>
         </div>

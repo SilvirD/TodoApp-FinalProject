@@ -6,9 +6,12 @@ export default function Table() {
   const [columns, setColumns] = useState([]);
 
   useEffect(() => {
-    axios.get(`http://localhost:5005/column`).then((response) => {
-      setColumns(response.data);
-    });
+    axios
+      .get(`http://localhost:5005/column/61a30208995bdb1b204b6a81`) //tam thoi
+      .then((response) => {
+        const { data } = response.data;
+        setColumns(data);
+      });
   }, []);
 
   return (

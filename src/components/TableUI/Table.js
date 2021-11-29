@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Checkbox, Modal, Progress } from "antd";
 import "antd/dist/antd.css";
 import {
@@ -8,8 +8,22 @@ import {
   PlusOutlined,
 } from "@ant-design/icons";
 import "./Table.scss";
+import { apiClient } from "../../helper/api_client";
+
+import TableItem from "./TableItem";
 
 function Table() {
+  const [tableItems, setTableItems] = useState([]);
+
+  useEffect(() => {
+    apiClient.get(`/table/618b9333a179ba01fc49768c`).then((response) => {
+      const { data } = response.data;
+      setTableItems(data);
+    });
+  }, []);
+
+  console.log(tableItems);
+
   return (
     <>
       <div className="Table">
@@ -30,7 +44,7 @@ function Table() {
           <span> Bảng cá nhân</span>
         </div>
         <div className="Table__Content">
-          <div className="Table__Content__Item">
+          {/* <div className="Table__Content__Item">
             <h1>table test 1</h1>
             <StarOutlined />
           </div>
@@ -53,7 +67,20 @@ function Table() {
           <div className="Table__Content__Item">
             <h1>table test 6has d hasid hasdausdhas sada</h1>
             <StarOutlined />
-          </div>
+          </div> */}
+
+          {tableItems.map((item) => {
+            const { _id, star, table_name, users_in_table } = item;
+            return (
+              <TableItem
+                key={_id}
+                tableId={_id}
+                tableName={table_name}
+                isTableChecked={star}
+                members={users_in_table}
+              />
+            );
+          })}
           <div className="Table__Content__Item">
             <p>
               <span>Tạo bảng mới </span>

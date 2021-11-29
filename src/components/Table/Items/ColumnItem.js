@@ -13,6 +13,7 @@ export default function ColumnItem({
   itemIndex,
   itemKey,
   members,
+  deadLine,
 }) {
   const handleDialog = () => {
     onOpenDialog({
@@ -20,6 +21,8 @@ export default function ColumnItem({
       content,
       longContent,
       members,
+      itemKey,
+      deadLine,
     });
   };
 
