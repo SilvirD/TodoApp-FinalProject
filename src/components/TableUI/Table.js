@@ -30,6 +30,8 @@ function Table() {
     history.push(`/notification/${id}`);
   };
 
+  console.log("tableItems", tableItems);
+
   return (
     <>
       <div className="Table">
@@ -38,10 +40,25 @@ function Table() {
           <span> Bảng gắn sao</span>
         </div>
         <div className="Table__Content">
-          <div className="Table__Content__Item__Star">
+          {tableItems.map((item) => {
+            const { _id, star, table_name, users_in_table } = item;
+            if (star) {
+              return (
+                <TableItem
+                  key={_id}
+                  tableId={_id}
+                  tableName={table_name}
+                  isTableChecked={star}
+                  members={users_in_table}
+                  onPageChange={() => handlePageChange(_id)}
+                />
+              );
+            }
+          })}
+          {/* <div className="Table__Content__Item__Star">
             <h1>table star</h1>
             <StarFilled />
-          </div>
+          </div> */}
         </div>
       </div>
       <div className="Table">
