@@ -22,4 +22,5 @@ const Card = ({ name, description }) => {
 	)
 }
 
-export default Card
+
+export default Card;

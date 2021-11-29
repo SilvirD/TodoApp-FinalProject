@@ -1,6 +1,9 @@
 import { AiOutlineNumber, AiOutlineUser, AiOutlineMenu } from "react-icons/ai";
 import { Link } from "react-router-dom";
 
+import Button from "./Button";
+import "./NavBar.scss";
+
 const NavBar = ({ userModal, setUserModal, mobileMenu, setMobileMenu }) => {
   const ICONSIZE = 24;
 

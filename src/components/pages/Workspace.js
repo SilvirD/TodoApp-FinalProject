@@ -1,28 +1,32 @@
+import { useEffect, useState } from "react";
+import { useHistory } from "react-router";
+import { apiClient } from "../../helper/api_client";
 import "../../styles/Workspace.scss";
-import { useState, useEffect } from "react";
-import FormModal from "../Workspace/FormModal";
 import Card from "../Workspace/Card";
-import axios from "axios";
+import FormModal from "../Workspace/FormModal";
 
 const Workspace = () => {
+  const history = useHistory();
   const [isOpen, setIsOpen] = useState(false);
   const [cardInfo, setCardInfo] = useState([]);
 
   let userToken = localStorage.getItem("tokenLogin");
 
   useEffect(() => {
-    handleSubmitForm()
+    handleSubmitForm();
   }, []);
 
   const handleSubmitForm = async () => {
     if (userToken) {
-      await axios
-        .get(`http://localhost:5005/workspace/user/${userToken}`)
-        .then((response) => {
-          setCardInfo(response.data);
-        });
+      await apiClient.get(`/workspace/user/${userToken}`).then((response) => {
+        setCardInfo(response.data);
+      });
     }
-  }
+  };
+
+  const handlePageChange = (id) => {
+    history.push(`/recent/${id}`);
+  };
 
   return (
     <div className="workspace">
@@ -49,6 +53,7 @@ const Workspace = () => {
               key={index}
               name={card.workspace_name}
               description={card.description}
+              onPageChange={() => handlePageChange(card._id)}
             />
           ))}
           {/* <Card name={cardInfo[0].name} description={cardInfo[0].description} /> */}

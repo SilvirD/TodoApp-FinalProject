@@ -9,6 +9,7 @@ import Notification from "./components/pages/Notification";
 import UserDialog from './components/common/UserDialog'
 import MobileMenu from './components/common/MobileMenu'
 import { useState } from "react";
+import Table from "./components/Table/Table";
 
 function App() {
   const [userModal, setUserModal] = useState(false);
@@ -23,11 +24,12 @@ function App() {
           <UserDialog userModal={userModal} setUserModal={setUserModal} />
           <MobileMenu mobileMenu={mobileMenu} setMobileMenu={setMobileMenu} />
 
-          <Switch>
+         <Switch>
             <Route exact path="/" component={Workspace} />
-            <Route exact path="/recent" component={Recent} />
+            <Route exact path="/home" component={Home}/>
+            <Route exact path="/recent/:id" component={Recent} />
             <Route exact path="/bookmark" component={Bookmark} />
-            <Route exact path="/notification" component={Notification} />
+            <Route exact path="/notification/:id" component={Table} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/register" component={Register} />
           </Switch>
@@ -38,3 +40,4 @@ function App() {
 }
 
 export default App;
+
