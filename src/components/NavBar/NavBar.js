@@ -1,7 +1,6 @@
 import { AiOutlineNumber, AiOutlineUser, AiOutlineMenu } from "react-icons/ai";
 import { Link } from "react-router-dom";
 
-import Button from "./Button";
 import "./NavBar.scss";
 
 const NavBar = ({ userModal, setUserModal, mobileMenu, setMobileMenu }) => {
@@ -11,14 +10,13 @@ const NavBar = ({ userModal, setUserModal, mobileMenu, setMobileMenu }) => {
     if (!mobileMenu) {
       setMobileMenu(!mobileMenu);
     }
-
   };
 
   const toggleProfileDialog = (userModal) => {
     if (!userModal) {
-      setUserModal(!userModal)
+      setUserModal(!userModal);
     }
-  }
+  };
 
   return (
     <nav className="navbar">
@@ -44,10 +42,13 @@ const NavBar = ({ userModal, setUserModal, mobileMenu, setMobileMenu }) => {
       </div>
 
       <div className="flex absolute top-1 right-3">
-        <div onClick={_ => toggleProfileDialog(userModal)} className="profile">
+        <div
+          onClick={(_) => toggleProfileDialog(userModal)}
+          className="profile"
+        >
           <AiOutlineUser size={ICONSIZE} />
         </div>
-        <div onClick={_ => toggleMobileMenu(mobileMenu)} className="menu">
+        <div onClick={(_) => toggleMobileMenu(mobileMenu)} className="menu">
           <AiOutlineMenu size={ICONSIZE} />
         </div>
       </div>

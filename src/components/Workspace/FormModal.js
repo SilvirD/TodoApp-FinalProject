@@ -26,8 +26,6 @@ export default function FormModal({
       userToken: localStorage.getItem("tokenLogin"),
     };
 
-    console.log(newCard);
-
     await apiClient
       .post("/workspace/addWorkspace", newCard)
       .then((response) => {

@@ -67,8 +67,6 @@ export default function ItemDialog({
     setDeadline(moment.utc(dateString));
   };
 
-  console.log("--------", deadLine);
-
   return (
     <Modal
       visible={isDialogOpen}
