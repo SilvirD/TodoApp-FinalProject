@@ -6,18 +6,25 @@ import Workspace from "./components/pages/Workspace";
 import Recent from "./components/pages/Recent";
 import Bookmark from "./components/pages/Bookmark";
 import Notification from "./components/pages/Notification";
-import Home from "./components/pages/Home";
-
+import UserDialog from './components/common/UserDialog'
+import MobileMenu from './components/common/MobileMenu'
+import { useState } from "react";
 import Table from "./components/Table/Table";
 
 function App() {
+  const [userModal, setUserModal] = useState(false);
+  const [mobileMenu, setMobileMenu] = useState(false);
+
   return (
     <>
       <Router>
         <div className="App">
-          <NavBar />
+          <NavBar userModal={userModal} setUserModal={setUserModal}
+            mobileMenu={mobileMenu} setMobileMenu={setMobileMenu} />
+          <UserDialog userModal={userModal} setUserModal={setUserModal} />
+          <MobileMenu mobileMenu={mobileMenu} setMobileMenu={setMobileMenu} />
 
-          <Switch>
+         <Switch>
             <Route exact path="/" component={Workspace} />
             <Route exact path="/home" component={Home}/>
             <Route exact path="/recent/:id" component={Recent} />
@@ -33,3 +40,4 @@ function App() {
 }
 
 export default App;
+
