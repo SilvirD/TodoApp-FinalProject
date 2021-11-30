@@ -10,15 +10,28 @@ import UserDialog from "./components/common/UserDialog";
 import MobileMenu from "./components/common/MobileMenu";
 import { useState } from "react";
 import Table from "./components/Table/Table";
+import imageList from "./images/index";
 
 function App() {
   const [userModal, setUserModal] = useState(false);
   const [mobileMenu, setMobileMenu] = useState(false);
 
+  const imgList = Object.values(imageList);
+  const randImg = imgList[Math.floor(Math.random() * imgList.length)];
+
   return (
     <>
       <Router>
-        <div className="App">
+        <div
+          className="App"
+          style={{
+            backgroundImage: `url(${randImg})`,
+            backgroundPosition: "center",
+            backgroundSize: "cover",
+            backgroundRepeat: "no-repeat",
+            height: "100vh",
+          }}
+        >
           <NavBar
             userModal={userModal}
             setUserModal={setUserModal}

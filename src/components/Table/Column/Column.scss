@@ -1,21 +1,28 @@
 .Column {
   height: 70vh;
-
   min-width: 250px;
-  border: 1px solid black;
+  background-color: lavender;
   border-radius: 5px;
   margin-right: 20px;
   &__header {
-    height: 10%;
-    background-color: aquamarine;
+    padding: 5px;
+    border-radius: 5px 5px 0 0;
+    display: flex;
+    &__main {
+      width: 70%;
+    }
+    &__sub {
+      margin-left: auto;
+      padding: 0 10px;
+    }
   }
 
   &__body {
     user-select: none;
 
     &__item {
+      background-color: turquoise;
       border-radius: 2px;
-      border: 1px solid red;
       height: 50px;
       cursor: pointer;
       margin: 10px 5px;

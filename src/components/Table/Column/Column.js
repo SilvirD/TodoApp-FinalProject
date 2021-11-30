@@ -4,6 +4,7 @@ import { apiClient } from "../../../helper/api_client";
 import ColumnItem from "../Items/ColumnItem";
 import ItemDialog from "../Items/ItemDialog";
 import "./Column.scss";
+import { EllipsisOutlined } from "@ant-design/icons";
 
 export default function Column({ colIndex, colId, colName, cardItems }) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -48,7 +49,9 @@ export default function Column({ colIndex, colId, colName, cardItems }) {
             >
               <div className="Column__header">
                 <div className="Column__header__main">{colName}</div>
-                <div className="Column__header__sub"></div>
+                <div className="Column__header__sub">
+                  <EllipsisOutlined />
+                </div>
               </div>
               <div className="Column__body">
                 {items.map((item, index) => {
