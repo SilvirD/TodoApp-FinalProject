@@ -9,7 +9,7 @@ import Notification from "./components/pages/Notification";
 import UserDialog from "./components/common/UserDialog";
 import MobileMenu from "./components/common/MobileMenu";
 import { useState } from "react";
-import Table from "./components/Table/Table";
+import TableDetail from "./components/TableDetail/TableDetail";
 import imageList from "./images/index";
 
 function App() {
@@ -45,7 +45,7 @@ function App() {
             <Route exact path="/" component={Workspace} />
             <Route exact path="/recent/:id" component={Recent} />
             <Route exact path="/bookmark" component={Bookmark} />
-            <Route exact path="/notification/:id" component={Table} />
+            <Route exact path="/notification/:id" component={TableDetail} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/register" component={Register} />
           </Switch>

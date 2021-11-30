@@ -46,7 +46,7 @@ function Table() {
 
   const handleCloseDialog = () => {
     setOpenModal();
-    setTableTitle();
+    setTableTitle("");
   };
 
   const handleCreateTable = () => {
