@@ -1,7 +1,7 @@
-import ReactDom from "react-dom";
 import { useState } from "react";
+import ReactDom from "react-dom";
+import { apiClient } from "../../helper/api_client";
 import "../../styles/FormModal.scss";
-import axios from "axios";
 
 export default function FormModal({
   open,
@@ -26,10 +26,8 @@ export default function FormModal({
       userToken: localStorage.getItem("tokenLogin"),
     };
 
-    console.log(newCard);
-
-    await axios
-      .post("http://localhost:5005/workspace/addWorkspace", newCard)
+    await apiClient
+      .post("/workspace/addWorkspace", newCard)
       .then((response) => {
         alert("add WS successfully");
       })

@@ -1,6 +1,6 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router";
+import { apiClient } from "../../helper/api_client";
 import FormInput from "../common/FormInput";
 
 const initialValue = {
@@ -81,8 +81,8 @@ const Login = () => {
   const _handleSubmit = async () => {
     if (checkInputEmail(email) || checkInputPassword(password)) {
     } else {
-      await axios
-        .post("http://localhost:5005/login", userInfo)
+      await apiClient
+        .post("/login", userInfo)
         .then((response) => {
           localStorage.setItem("tokenLogin", response.data);
           alert("login successfully");

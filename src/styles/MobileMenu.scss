@@ -1,0 +1,17 @@
+.menudialog {
+  @apply fixed top-0 left-0 bg-blue-400 text-white h-screen w-full text-5xl flex justify-center items-center;
+
+	* {
+		@apply m-2 my-6;
+	}
+
+	ul {
+		li {
+			@apply bg-blue-300 py-3 p-2 rounded-sm hover:bg-blue-200;
+		}
+	}
+
+	button {
+		@apply bg-white text-black py-1 px-5 rounded-full hover:bg-gray-300 hover:text-white;
+	}
+}

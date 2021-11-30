@@ -1,20 +1,20 @@
-import { useState } from "react";
-import { AiOutlineNumber, AiOutlineUser } from "react-icons/ai";
+import { AiOutlineNumber, AiOutlineUser, AiOutlineMenu } from "react-icons/ai";
 import { Link } from "react-router-dom";
-import Button from "./Button";
 
-const NavBar = () => {
+import "./NavBar.scss";
+
+const NavBar = ({ userModal, setUserModal, mobileMenu, setMobileMenu }) => {
   const ICONSIZE = 24;
-  const [expandState, setExpandState] = useState(false);
-  const [navlinks, setNavLink] = useState("navlinks");
 
-  const toggleMobileMenu = () => {
-    setExpandState(!expandState);
+  const toggleMobileMenu = (mobileMenu) => {
+    if (!mobileMenu) {
+      setMobileMenu(!mobileMenu);
+    }
+  };
 
-    if (expandState) {
-      setNavLink("navlinks");
-    } else {
-      setNavLink("navlinks active");
+  const toggleProfileDialog = (userModal) => {
+    if (!userModal) {
+      setUserModal(!userModal);
     }
   };
 
@@ -24,7 +24,7 @@ const NavBar = () => {
         <AiOutlineNumber size={ICONSIZE} /> greello
       </h1>
 
-      <div className={navlinks}>
+      <div className="navlinks">
         <ul>
           <li>
             <Link to="/">Không gian</Link>
@@ -42,11 +42,14 @@ const NavBar = () => {
       </div>
 
       <div className="flex absolute top-1 right-3">
-        <div className="profile">
+        <div
+          onClick={(_) => toggleProfileDialog(userModal)}
+          className="profile"
+        >
           <AiOutlineUser size={ICONSIZE} />
         </div>
-        <div onClick={toggleMobileMenu} className="menu">
-          <Button expandState={expandState} />
+        <div onClick={(_) => toggleMobileMenu(mobileMenu)} className="menu">
+          <AiOutlineMenu size={ICONSIZE} />
         </div>
       </div>
     </nav>
