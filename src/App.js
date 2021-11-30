@@ -6,6 +6,7 @@ import Workspace from "./components/pages/Workspace";
 import Recent from "./components/pages/Recent";
 import Bookmark from "./components/pages/Bookmark";
 import Notification from "./components/pages/Notification";
+import Home from "./components/pages/Home"
 import UserDialog from "./components/common/UserDialog";
 import MobileMenu from "./components/common/MobileMenu";
 import { useEffect, useState } from "react";
@@ -54,6 +55,7 @@ function App() {
             <Route exact path="/notification/:id" component={TableDetail} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/register" component={Register} />
+            <Route exact path="/home" component={Home} />
           </Switch>
         </div>
       </Router>

@@ -10,6 +10,10 @@ const userDialog = ({ userModal, setUserModal }) => {
 		}
 	}
 
+	const handleLogout = () => {
+		localStorage.removeItem('tokenLogin')
+	}
+
 	return ReactDom.createPortal(
 		<>
 		{userModal && <div className="overlay">
@@ -18,7 +22,7 @@ const userDialog = ({ userModal, setUserModal }) => {
 					<span><FaRegUserCircle /></span> <span>Nguyễn Văn A</span>
 				</div>
 				<div className="flex">
-					<button className="logout-btn">
+					<button className="logout-btn" onClick={_ => handleLogout()}>
 						Đăng xuất
 					</button>
 					<button onClick={_ => handleClose(userModal)}>
