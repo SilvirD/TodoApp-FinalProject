@@ -1,4 +1,5 @@
 import '../../styles/Home.scss'
+import { Link } from "react-router-dom";
 
 
 const Section = ({ text, desc, svgLink, blueBg, haveButton, reverse }) => {
@@ -8,7 +9,7 @@ const Section = ({ text, desc, svgLink, blueBg, haveButton, reverse }) => {
 				<h1 class="font-bold text-4xl">{text}</h1>
 				<p>{desc}</p>
 				{
-					haveButton && (<button>Đăng ký ngay</button>)
+					haveButton && (<Link to="/register">Đăng ký ngay</Link>)
 				}
 			</div>
 			<object data={svgLink} class="w-9/12 md:w-4/12"></object>

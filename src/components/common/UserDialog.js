@@ -1,10 +1,13 @@
 import ReactDom from "react-dom";
 import '../../styles/UserDialog.scss'
+import { apiClient } from "../../helper/api_client";
 import { FaRegUserCircle } from "react-icons/fa";
+import { useHistory } from "react-router-dom";
 
-const userDialog = ({ userModal, setUserModal }) => {
+const UserDialog = ({ userModal, setUserModal, loginState, setLogState }) => {
+	const history = useHistory();
+
 	const handleClose = (userModal) => {
-		console.log(userModal)
 		if (userModal) {
 			setUserModal(!userModal)
 		}
@@ -12,19 +15,35 @@ const userDialog = ({ userModal, setUserModal }) => {
 
 	const handleLogout = () => {
 		localStorage.removeItem('tokenLogin')
+		if (userModal) {
+			setUserModal(!userModal)
+			setLogState(localStorage.getItem('tokenLogin'))
+		}
+		history.push('/login')
+	}
+
+	const moveToLogin = () => {
+		if (userModal) {
+			setUserModal(!userModal)
+		}
+		history.push('/login')		
 	}
 
 	return ReactDom.createPortal(
 		<>
 		{userModal && <div className="overlay">
 			<div className="dialog">
-				<div className="userinfo">
+				{ loginState && <div className="userinfo">
 					<span><FaRegUserCircle /></span> <span>Nguyễn Văn A</span>
-				</div>
+				</div>}
+				{ !loginState && <span>Chưa có người dùng đăng nhập</span> }
 				<div className="flex">
-					<button className="logout-btn" onClick={_ => handleLogout()}>
+					{ loginState && <button className="logout-btn" onClick={_ => handleLogout()}>
 						Đăng xuất
-					</button>
+					</button>}
+					{ !loginState && <button className="logout-btn" onClick={_ => moveToLogin()}>
+						Đăng nhập
+					</button>}
 					<button onClick={_ => handleClose(userModal)}>
 						Trở lại
 					</button>
@@ -36,4 +55,4 @@ const userDialog = ({ userModal, setUserModal }) => {
 	)
 }
 
-export default userDialog
+export default UserDialog

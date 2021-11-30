@@ -16,6 +16,7 @@ import imageList from "./images/index";
 function App() {
   const [userModal, setUserModal] = useState(false);
   const [mobileMenu, setMobileMenu] = useState(false);
+  const [loginState, setLogState] = useState(localStorage.getItem("tokenLogin"))
 
   const imgList = Object.values(imageList);
   const randImg = imgList[Math.floor(Math.random() * imgList.length)];
@@ -44,18 +45,23 @@ function App() {
             setUserModal={setUserModal}
             mobileMenu={mobileMenu}
             setMobileMenu={setMobileMenu}
+            loginState={loginState}
           />
-          <UserDialog userModal={userModal} setUserModal={setUserModal} />
+          <UserDialog userModal={userModal} setUserModal={setUserModal}
+          loginState={loginState} setLogState={setLogState} />
           <MobileMenu mobileMenu={mobileMenu} setMobileMenu={setMobileMenu} />
 
           <Switch>
+            <Route exact path="/login">
+              <Login loginState={loginState} setLogState={setLogState} />
+              </Route>
+            <Route exact path="/register" component={Register} />
+            <Route exact path="/home" component={Home} />
+
             <Route exact path="/" component={Workspace} />
             <Route exact path="/recent/:id" component={Recent} />
             <Route exact path="/bookmark" component={Bookmark} />
             <Route exact path="/notification/:id" component={TableDetail} />
-            <Route exact path="/login" component={Login} />
-            <Route exact path="/register" component={Register} />
-            <Route exact path="/home" component={Home} />
           </Switch>
         </div>
       </Router>
