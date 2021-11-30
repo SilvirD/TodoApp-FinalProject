@@ -8,7 +8,7 @@ import Bookmark from "./components/pages/Bookmark";
 import Notification from "./components/pages/Notification";
 import UserDialog from "./components/common/UserDialog";
 import MobileMenu from "./components/common/MobileMenu";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TableDetail from "./components/TableDetail/TableDetail";
 import imageList from "./images/index";
 
@@ -19,13 +19,19 @@ function App() {
   const imgList = Object.values(imageList);
   const randImg = imgList[Math.floor(Math.random() * imgList.length)];
 
+  const [background, setBackground] = useState("");
+
+  useEffect(() => {
+    setBackground(randImg);
+  }, []);
+
   return (
     <>
       <Router>
         <div
           className="App"
           style={{
-            backgroundImage: `url(${randImg})`,
+            backgroundImage: `url(${background})`,
             backgroundPosition: "center",
             backgroundSize: "cover",
             backgroundRepeat: "no-repeat",
