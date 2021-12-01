@@ -1,54 +1,74 @@
 import {
   AlignLeftOutlined,
+  CheckOutlined,
   CheckSquareOutlined,
   FieldTimeOutlined,
   PlusCircleFilled,
   UnorderedListOutlined,
   UserAddOutlined,
 } from "@ant-design/icons";
-import { Button, Checkbox, Modal, Progress, DatePicker } from "antd";
+import {
+  Button,
+  Checkbox,
+  DatePicker,
+  Dropdown,
+  Menu,
+  Modal,
+  Progress,
+  Tooltip,
+} from "antd";
 import "antd/dist/antd.css";
-import { useEffect, useMemo, useState } from "react";
-import "./ItemDialog.scss";
 import moment from "moment";
-
+import { useEffect, useMemo, useState } from "react";
 import { apiClient } from "../../../helper/api_client";
+import "./ItemDialog.scss";
 
 export default function ItemDialog({
   isDialogOpen,
   onOpenCloseDialog,
-  ...remains
+  dialogContent,
 }) {
-  const { itemKey, title, content, longContent, members = [] } = remains;
+  console.log("remains", dialogContent);
+
+  const { _id, card_name, card_desc, users_in_card, userInTable } =
+    dialogContent || {
+      _id: "",
+      card_name: "",
+      card_desc: "",
+      users_in_card: [],
+      userInTable: [],
+    };
 
   const [taskList, setTaskList] = useState([]);
   const [subTasks, setSubTasks] = useState([]);
   const [deadLine, setDeadline] = useState("");
-
-  useEffect(() => {
-    if (itemKey) {
-      apiClient.get(`/taskList/${itemKey}`).then((response) => {
-        const { data } = response.data;
-        setTaskList(data);
-      });
-    }
-  }, [itemKey]);
+  const [newData, setNewData] = useState();
+  const [menuVisible, setMenuVisible] = useState(false);
 
   // useEffect(() => {
-  //   taskList.map((task) => {
-  //     return setSubTasks(task.subTask_IDs);
-  //   });
-  // }, [taskList]);
+  //   apiClient
+  //     .get(`/card/${_id}`)
+  //     .then((response) => );
+  // }, [newData]);
 
-  useEffect(() => {
-    if (itemKey) {
-      apiClient.patch(`card/editCard/${itemKey}`, {
-        card_deadline: {
-          deadline: deadLine,
-        },
-      });
-    }
-  }, [deadLine]);
+  // useEffect(() => {
+  //   if (itemKey) {
+  //     apiClient.get(`/taskList/${itemKey}`).then((response) => {
+  //       const { data } = response.data;
+  //       setTaskList(data);
+  //     });
+  //   }
+  // }, [newData]);
+
+  // useEffect(() => {
+  //   if (itemKey) {
+  //     apiClient.patch(`card/editCard/${itemKey}`, {
+  //       card_deadline: {
+  //         deadline: deadLine,
+  //       },
+  //     });
+  //   }
+  // }, [deadLine]);
 
   const percent = useMemo(() => {
     const checkedTask = subTasks.reduce(
@@ -67,10 +87,57 @@ export default function ItemDialog({
     setDeadline(moment.utc(dateString));
   };
 
+  const handleVisibleChange = () => {
+    setMenuVisible(!menuVisible);
+  };
+
+  const memberIDs = users_in_card.map((member) => member.user_ID);
+  const handleMenuClick = (e) => {
+    if (memberIDs.includes(e.key)) {
+      apiClient
+        .patch(`/card/deleteUserCard/${_id}`, {
+          user_ID: e.key,
+        })
+        .then((response) => setNewData(response));
+    } else {
+      apiClient
+        .patch(`/card/addUserCard/${_id}`, {
+          user_ID: e.key,
+        })
+        .then((response) => setNewData(response));
+    }
+  };
+
+  const menu = (
+    <Menu onClick={handleMenuClick}>
+      {userInTable.map((userTb) => {
+        const { _id, email } = userTb.user_ID;
+        console.log("-----ID: ", _id);
+        return (
+          <Menu.Item key={_id}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                gap: "12px",
+              }}
+            >
+              {email}
+              {users_in_card
+                .map((member) => member.user_ID._id)
+                .includes(_id) && <CheckOutlined style={{ color: "green" }} />}
+            </div>
+          </Menu.Item>
+        );
+      })}
+    </Menu>
+  );
+
   return (
     <Modal
       visible={isDialogOpen}
-      title={title}
+      title={card_name}
       onOk={onOpenCloseDialog}
       onCancel={onOpenCloseDialog}
       width={850}
@@ -91,17 +158,32 @@ export default function ItemDialog({
               <span>Member</span>
             </div>
             <div className="Content__main__members__list">
-              {members.map((member) => {
+              {users_in_card.map((member) => {
+                console.log("member", member);
                 return (
-                  <img
-                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcKj1fruVtsXkI7teuyk4KqBoKr9SVaEA7IA&usqp=CAU"
-                    alt=""
-                  />
+                  <Tooltip placement="bottom" title={member.user_ID.username}>
+                    <img
+                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcKj1fruVtsXkI7teuyk4KqBoKr9SVaEA7IA&usqp=CAU"
+                      alt=""
+                    />
+                  </Tooltip>
                 );
               })}
-              <PlusCircleFilled
-                style={{ fontSize: "200%", color: "rgb(181, 181, 181)" }}
-              />
+
+              <Dropdown
+                overlay={menu}
+                onVisibleChange={handleVisibleChange}
+                visible={menuVisible}
+              >
+                <div
+                  className="ant-dropdown-link"
+                  onClick={(e) => e.preventDefault()}
+                >
+                  <PlusCircleFilled
+                    style={{ fontSize: "200%", color: "rgb(181, 181, 181)" }}
+                  />
+                </div>
+              </Dropdown>
             </div>
           </div>
 

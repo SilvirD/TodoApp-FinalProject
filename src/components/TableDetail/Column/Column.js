@@ -6,7 +6,13 @@ import ItemDialog from "../Items/ItemDialog";
 import "./Column.scss";
 import { EllipsisOutlined } from "@ant-design/icons";
 
-export default function Column({ colIndex, colId, colName, cardItems }) {
+export default function Column({
+  colIndex,
+  colId,
+  colName,
+  cardItems,
+  userInTable,
+}) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [dialogContent, setDialogContent] = useState();
   const [items, setItems] = useState(cardItems);
@@ -21,7 +27,11 @@ export default function Column({ colIndex, colId, colName, cardItems }) {
 
   const handleOpenDialog = (dialogData) => {
     setIsDialogOpen(!isDialogOpen);
-    setDialogContent(dialogData);
+
+    apiClient.get(`/card/${dialogData.itemKey}`).then((response) => {
+      const { data } = response.data;
+      setDialogContent({ ...data[0], userInTable: dialogData.userInTable });
+    });
   };
 
   const handleCloseDialog = () => {
@@ -62,6 +72,7 @@ export default function Column({ colIndex, colId, colName, cardItems }) {
                     users_in_card,
                     card_deadline,
                   } = item.card_ID;
+
                   return (
                     <ColumnItem
                       key={_id}
@@ -71,6 +82,7 @@ export default function Column({ colIndex, colId, colName, cardItems }) {
                       content={card_desc}
                       onOpenDialog={handleOpenDialog}
                       members={users_in_card}
+                      userInTable={userInTable}
                       deadLine={card_deadline}
                     />
                   );
@@ -85,7 +97,7 @@ export default function Column({ colIndex, colId, colName, cardItems }) {
       <ItemDialog
         isDialogOpen={isDialogOpen}
         onOpenCloseDialog={handleCloseDialog}
-        {...dialogContent}
+        dialogContent={dialogContent}
       />
     </>
   );

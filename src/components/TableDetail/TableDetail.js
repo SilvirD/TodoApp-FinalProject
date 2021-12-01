@@ -190,6 +190,7 @@ export default function Table() {
               colId={_id}
               colName={column_name}
               cardItems={card_IDs}
+              userInTable={userInTable}
             />
           );
         })}
