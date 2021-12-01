@@ -25,13 +25,17 @@ export default function Column({
     });
   }, [items]);
 
+  const reloadDialog = (id, userInTable) => {
+    apiClient.get(`/card/${id}`).then((response) => {
+      const { data } = response.data;
+      setDialogContent({ ...data[0], userInTable });
+    });
+  };
+
   const handleOpenDialog = (dialogData) => {
     setIsDialogOpen(!isDialogOpen);
 
-    apiClient.get(`/card/${dialogData.itemKey}`).then((response) => {
-      const { data } = response.data;
-      setDialogContent({ ...data[0], userInTable: dialogData.userInTable });
-    });
+    reloadDialog(dialogData.itemKey, dialogData.userInTable);
   };
 
   const handleCloseDialog = () => {
@@ -98,6 +102,7 @@ export default function Column({
         isDialogOpen={isDialogOpen}
         onOpenCloseDialog={handleCloseDialog}
         dialogContent={dialogContent}
+        onReloadDialog={reloadDialog}
       />
     </>
   );

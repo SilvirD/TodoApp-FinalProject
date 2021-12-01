@@ -27,8 +27,8 @@ export default function ItemDialog({
   isDialogOpen,
   onOpenCloseDialog,
   dialogContent,
+  onReloadDialog,
 }) {
-
   const { _id, card_name, card_desc, users_in_card, userInTable } =
     dialogContent || {
       _id: "",
@@ -43,12 +43,6 @@ export default function ItemDialog({
   const [deadLine, setDeadline] = useState("");
   const [newData, setNewData] = useState();
   const [menuVisible, setMenuVisible] = useState(false);
-
-  // useEffect(() => {
-  //   apiClient
-  //     .get(`/card/${_id}`)
-  //     .then((response) => );
-  // }, [newData]);
 
   // useEffect(() => {
   //   if (itemKey) {
@@ -90,20 +84,20 @@ export default function ItemDialog({
     setMenuVisible(!menuVisible);
   };
 
-  const memberIDs = users_in_card.map((member) => member.user_ID);
+  const memberIDs = users_in_card.map((member) => member.user_ID._id);
   const handleMenuClick = (e) => {
     if (memberIDs.includes(e.key)) {
       apiClient
         .patch(`/card/deleteUserCard/${_id}`, {
           user_ID: e.key,
         })
-        .then((response) => setNewData(response));
+        .then((response) => onReloadDialog(_id, userInTable));
     } else {
       apiClient
         .patch(`/card/addUserCard/${_id}`, {
           user_ID: e.key,
         })
-        .then((response) => setNewData(response));
+        .then((response) => onReloadDialog(_id, userInTable));
     }
   };
 
@@ -113,7 +107,14 @@ export default function ItemDialog({
         const { _id, email } = userTb.user_ID;
         return (
           <Menu.Item key={_id}>
-            <div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                gap: "12px",
+              }}
+            >
               {email}
               {users_in_card
                 .map((member) => member.user_ID._id)
