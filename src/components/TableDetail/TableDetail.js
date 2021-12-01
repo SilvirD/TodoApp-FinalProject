@@ -24,7 +24,6 @@ export default function Table() {
   const [userInTable, setUserInTable] = useState([]);
   const [newData, setNewData] = useState();
   const [menuVisible, setMenuVisible] = useState(false);
-  const [isTicked, setIsTicked] = useState(false);
 
   const params = useParams();
   const tableId = params.id;
@@ -84,18 +83,31 @@ export default function Table() {
       });
   };
 
-  const handleMenuClick = (e) => {
-    console.log(e);
-  };
-
   const handleVisibleChange = () => {
     setMenuVisible(!menuVisible);
   };
 
+  const userTableIDs = userInTable.map((userTb) => userTb.user_ID._id);
+  const handleMenuClick = (e) => {
+    if (userTableIDs.includes(e.key)) {
+      apiClient
+        .patch(`/table/deleteUserTable/${tableId}`, {
+          user_ID: e.key,
+        })
+        .then((response) => setNewData(response));
+    } else {
+      apiClient
+        .patch(`/table/addUserTable/${tableId}`, {
+          user_ID: e.key,
+        })
+        .then((response) => setNewData(response));
+    }
+  };
+
   const menu = (
     <Menu onClick={handleMenuClick}>
-      {userInWS.map((user) => {
-        const { _id, email } = user.user_ID;
+      {userInWS.map((userWs) => {
+        const { _id, email } = userWs.user_ID;
         return (
           <Menu.Item key={_id}>
             <div
@@ -107,9 +119,9 @@ export default function Table() {
               }}
             >
               {email}
-              {userInTable.map((item) => item.user_ID._id).includes(_id) && (
-                <CheckOutlined style={{ color: "green" }} />
-              )}
+              {userInTable
+                .map((userTb) => userTb.user_ID._id)
+                .includes(_id) && <CheckOutlined style={{ color: "green" }} />}
             </div>
           </Menu.Item>
         );
