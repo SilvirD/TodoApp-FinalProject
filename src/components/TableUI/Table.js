@@ -24,7 +24,7 @@ function Table() {
   const [tableTitle, setTableTitle] = useState("");
 
   useEffect(() => {
-    apiClient.get(`/table/${workspaceId}`).then((response) => {
+    apiClient.get(`/table/ws/${workspaceId}`).then((response) => {
       const { data } = response.data;
       setTableItems(data);
     });
@@ -111,7 +111,7 @@ function Table() {
               />
             );
           })}
-          <div className="Table__Content__Item" onClick={handleOpenDialog}>
+          <div className="Table__Content__Item__Non" onClick={handleOpenDialog}>
             <p>
               <span>Tạo bảng mới </span>
               <PlusOutlined />
@@ -122,22 +122,26 @@ function Table() {
 
       <Modal
         visible={openModal}
-        title="Create new table"
+        title="Tạo bảng mới"
+        width={300}
         onCancel={handleCloseDialog}
         footer={[
           <Button key="back" onClick={handleCloseDialog}>
-            Cancel
+            Hủy
           </Button>,
           <Button key="submit" type="primary" onClick={handleCreateTable}>
-            Submit
+            Tạo mới
           </Button>,
         ]}
       >
-        <input
-          type="text"
-          value={tableTitle}
-          onChange={(e) => setTableTitle(e.target.value)}
-        />
+        <div className="InputTable">
+          <h4>Tên bảng:</h4>
+          <input
+            type="text"
+            value={tableTitle}
+            onChange={(e) => setTableTitle(e.target.value)}
+          />
+        </div>
       </Modal>
     </>
   );
