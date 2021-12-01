@@ -28,7 +28,6 @@ const Workspace = () => {
   const handlePageChange = (id) => {
     history.push(`/recent/${id}`);
   };
-
   return (
     <div className="workspace">
       <div className="workspace__title">
@@ -58,6 +57,7 @@ const Workspace = () => {
               key={index}
               name={card.workspace_name}
               description={card.description}
+              arrUser={card.users_in_ws}
               onPageChange={() => handlePageChange(card._id)}
             />
           ))}

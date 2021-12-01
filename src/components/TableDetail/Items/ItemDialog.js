@@ -28,7 +28,6 @@ export default function ItemDialog({
   onOpenCloseDialog,
   dialogContent,
 }) {
-  console.log("remains", dialogContent);
 
   const { _id, card_name, card_desc, users_in_card, userInTable } =
     dialogContent || {
@@ -112,17 +111,9 @@ export default function ItemDialog({
     <Menu onClick={handleMenuClick}>
       {userInTable.map((userTb) => {
         const { _id, email } = userTb.user_ID;
-        console.log("-----ID: ", _id);
         return (
           <Menu.Item key={_id}>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                gap: "12px",
-              }}
-            >
+            <div>
               {email}
               {users_in_card
                 .map((member) => member.user_ID._id)
@@ -159,7 +150,6 @@ export default function ItemDialog({
             </div>
             <div className="Content__main__members__list">
               {users_in_card.map((member) => {
-                console.log("member", member);
                 return (
                   <Tooltip placement="bottom" title={member.user_ID.username}>
                     <img
@@ -180,7 +170,11 @@ export default function ItemDialog({
                   onClick={(e) => e.preventDefault()}
                 >
                   <PlusCircleFilled
-                    style={{ fontSize: "200%", color: "rgb(181, 181, 181)" }}
+                    style={{
+                      fontSize: "200%",
+                      color: "rgb(181, 181, 181)",
+                      paddingTop: "2px",
+                    }}
                   />
                 </div>
               </Dropdown>

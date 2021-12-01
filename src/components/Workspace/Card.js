@@ -1,4 +1,7 @@
-const Card = ({ name, description, onPageChange }) => {
+import { PlusCircleFilled } from "@ant-design/icons";
+import { Dropdown, Menu, Tooltip } from "antd";
+
+const Card = ({ name, description, arrUser, onPageChange }) => {
   const colorPallete = [
     "bg-red-400",
     "bg-yellow-400",
@@ -10,18 +13,37 @@ const Card = ({ name, description, onPageChange }) => {
   ];
 
   return (
-    <div className="card" onClick={onPageChange}>
-      <div
-        className={
-          colorPallete[Math.floor(Math.random() * colorPallete.length)] +
-          " select-none h-14 rounded-t-xl"
-        }
-      >
-        ⠀
+    <div className="card">
+      <div className="card__info" onClick={onPageChange}>
+        <div
+          className={
+            colorPallete[Math.floor(Math.random() * colorPallete.length)] +
+            " select-none h-14 rounded-t-xl"
+          }
+        ></div>
+        <div className="card__info__title m-4">
+          <h1>{name}</h1>
+        </div>
       </div>
-      <div className="m-4">
-        <h1>{name}</h1>
-        <p>{description}</p>
+      <div className="card__users">
+        {arrUser.map((user) => {
+          const { username } = user.user_ID;
+          return (
+            <Tooltip placement="bottom" title={username}>
+              <img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcKj1fruVtsXkI7teuyk4KqBoKr9SVaEA7IA&usqp=CAU"
+                alt=""
+              />
+            </Tooltip>
+          );
+        })}
+        <PlusCircleFilled
+          style={{
+            fontSize: "200%",
+            color: "rgb(181, 181, 181)",
+            paddingTop: "1px",
+          }}
+        />
       </div>
     </div>
   );

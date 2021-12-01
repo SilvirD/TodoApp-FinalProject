@@ -28,9 +28,33 @@
 
       .card {
         @apply bg-gray-100 rounded-xl cursor-pointer hover:shadow-2xl transition-shadow duration-500;
-
-        h1 {
-          @apply font-bold text-3xl;
+        width: 295px;
+        height: 170px;
+        position: relative;
+        &__info {
+          &__title {
+            h1 {
+              @apply text-3xl;
+              font-weight: bold;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+            }
+          }
+        }
+        &__users {
+          position: absolute;
+          width: 100%;
+          display: flex;
+          margin-left: 15px;
+          img {
+            cursor: pointer;
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+          }
         }
       }
       .card:hover {
