@@ -1,27 +1,41 @@
 .workspace {
   @apply flex flex-col p-4;
-  .toolbar {
-    @apply ml-auto;
-    .btn-create {
-      @apply bg-blue-400 text-white rounded-sm p-4;
-    }
-  }
-
-  .browser {
+  &__title {
+    display: flex;
     h1 {
       @apply font-bold text-4xl mt-5;
+      display: inline-block;
+      cursor: context-menu;
     }
-
+    .toolbar {
+      @apply ml-auto;
+      .btn-create {
+        @apply bg-blue-400 text-white rounded-sm p-4;
+        width: fit-content;
+        margin-top: 15px;
+        border-radius: 5px;
+      }
+      .btn-create:hover {
+        box-shadow: inset 10em 10em rgb(49, 79, 155);
+        transition-duration: 0.8s;
+      }
+    }
+  }
+  .browser {
     .bar {
       @apply my-4 grid gap-4;
       grid-template-columns: repeat(auto-fill, minmax(269px, 1fr));
 
       .card {
-        @apply bg-gray-100 rounded-sm cursor-pointer hover:shadow-xl transition-shadow duration-500;
+        @apply bg-gray-100 rounded-xl cursor-pointer hover:shadow-2xl transition-shadow duration-500;
 
         h1 {
           @apply font-bold text-3xl;
         }
+      }
+      .card:hover {
+        transform: scale(1.03);
+        transition: 0.3s;
       }
     }
   }

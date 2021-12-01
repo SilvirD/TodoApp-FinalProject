@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import "./NavBar.scss";
 
 const NavBar = ({ userModal, setUserModal, mobileMenu, setMobileMenu }) => {
-  const ICONSIZE = 24;
+  const ICONSIZE = 30;
 
   const toggleMobileMenu = (mobileMenu) => {
     if (!mobileMenu) {
@@ -41,7 +41,7 @@ const NavBar = ({ userModal, setUserModal, mobileMenu, setMobileMenu }) => {
         </ul>
       </div>
 
-      <div className="flex absolute top-1 right-3">
+      <div className="flex absolute top-0.5 right-3">
         <div
           onClick={(_) => toggleProfileDialog(userModal)}
           className="profile"

@@ -4,6 +4,7 @@ import { apiClient } from "../../helper/api_client";
 import "../../styles/Workspace.scss";
 import Card from "../Workspace/Card";
 import FormModal from "../Workspace/FormModal";
+import { AppstoreOutlined } from "@ant-design/icons";
 
 const Workspace = () => {
   const history = useHistory();
@@ -30,10 +31,16 @@ const Workspace = () => {
 
   return (
     <div className="workspace">
-      <div className="toolbar">
-        <button className="btn-create" onClick={() => setIsOpen(true)}>
-          Tạo không gian mới
-        </button>
+      <div className="workspace__title">
+        <AppstoreOutlined
+          style={{ fontSize: "200%", paddingTop: "28px", marginRight: "10px" }}
+        />
+        <h1>Không gian của bạn</h1>
+        <div className="toolbar">
+          <button className="btn-create" onClick={() => setIsOpen(true)}>
+            Tạo không gian mới
+          </button>
+        </div>
       </div>
 
       <FormModal
@@ -45,8 +52,6 @@ const Workspace = () => {
       />
 
       <div className="browser">
-        <h1>Không gian của bạn</h1>
-
         <div className="bar">
           {cardInfo.map((card, index) => (
             <Card

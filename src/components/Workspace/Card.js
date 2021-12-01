@@ -14,7 +14,7 @@ const Card = ({ name, description, onPageChange }) => {
       <div
         className={
           colorPallete[Math.floor(Math.random() * colorPallete.length)] +
-          " select-none h-20"
+          " select-none h-14 rounded-t-xl"
         }
       >
         ⠀
