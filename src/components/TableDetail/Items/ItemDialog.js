@@ -6,6 +6,7 @@ import {
   PlusCircleFilled,
   UnorderedListOutlined,
   UserAddOutlined,
+  CloseOutlined,
 } from "@ant-design/icons";
 import {
   Button,
@@ -22,6 +23,22 @@ import moment from "moment";
 import { useEffect, useMemo, useState } from "react";
 import { apiClient } from "../../../helper/api_client";
 import "./ItemDialog.scss";
+import AddWorkModal from "./AddWorkModal";
+import AddInput from "./AddInput";
+import ProgressBar from "./ProgressBar";
+
+const defaultData = {
+  _id: "",
+  card_name: "",
+  card_desc: "",
+  users_in_card: [],
+  userInTable: [],
+  card_deadline: {
+    created_at: "TBD",
+    deadline: "TBD",
+  },
+  card_taskLists: [],
+};
 
 export default function ItemDialog({
   isDialogOpen,
@@ -29,30 +46,23 @@ export default function ItemDialog({
   dialogContent,
   onReloadDialog,
 }) {
-  const { _id, card_name, card_desc, users_in_card, userInTable } =
-    dialogContent || {
-      _id: "",
-      card_name: "",
-      card_desc: "",
-      users_in_card: [],
-      userInTable: [],
-    };
+  const {
+    _id,
+    card_name,
+    card_desc,
+    users_in_card,
+    userInTable,
+    card_deadline,
+    card_taskLists,
+  } = dialogContent || defaultData;
 
-  const [taskList, setTaskList] = useState([]);
   const [subTasks, setSubTasks] = useState([]);
-  const [deadLine, setDeadline] = useState(moment());
+  const [deadLine, setDeadline] = useState();
   const [newData, setNewData] = useState();
   const [dialogDesc, setDialogDesc] = useState("");
   const [menuVisible, setMenuVisible] = useState(false);
 
-  // useEffect(() => {
-  //   if (itemKey) {
-  //     apiClient.get(`/taskList/${itemKey}`).then((response) => {
-  //       const { data } = response.data;
-  //       setTaskList(data);
-  //     });
-  //   }
-  // }, [newData]);
+  const [isOpenWorkModal, setIsOpenWorkModal] = useState(false);
 
   useEffect(() => {
     if (_id && deadLine) {
@@ -80,9 +90,12 @@ export default function ItemDialog({
     return Math.floor((checkedTask / subTasks.length) * 100);
   }, [subTasks]);
 
-  const handleDeleteWork = (id) => {
-    // setSubTasks((prevWorks) => prevWorks.filter((item) => item.id !== id));
-    // call api delete
+  const handleDeleteWork = (workID, cardID) => {
+    apiClient
+      .delete(`taskList/deleteTaskList/${workID}`, {
+        cardID,
+      })
+      .then((response) => onReloadDialog(_id, userInTable));
   };
 
   const handleDateChange = (date, dateString) => {
@@ -151,21 +164,48 @@ export default function ItemDialog({
     </Menu>
   );
 
+  const handleCloseDialog = () => {
+    setDeadline();
+    onOpenCloseDialog();
+  };
+
+  const handleAddNewWork = () => {
+    setIsOpenWorkModal(!isOpenWorkModal);
+  };
+
+  const handleCloseWorkModal = () => {
+    setIsOpenWorkModal();
+    onReloadDialog(_id, userInTable);
+  };
+
+  const handleDeleteSubTask = (subTaskID, taskListID) => {
+    apiClient
+      .delete(`subtask/deleteSubTask/${subTaskID}`, {
+        taskListID,
+      })
+      .then((response) => onReloadDialog(_id, userInTable));
+  };
+
+  const handleSubTaskChecked = (subTaskID, currentCheck) => {
+    apiClient
+      .patch(`/subtask/editSubTask/${subTaskID}`, {
+        subtask_checked: !currentCheck,
+      })
+      .then((response) => onReloadDialog(_id, userInTable));
+
+    apiClient
+      .patch(`/subtask/checkSubTask/${subTaskID}`)
+      .then((response) => onReloadDialog(_id, userInTable));
+  };
+
   return (
     <Modal
       visible={isDialogOpen}
       title={card_name}
-      onOk={onOpenCloseDialog}
-      onCancel={onOpenCloseDialog}
+      onOk={handleCloseDialog}
+      onCancel={handleCloseDialog}
       width={850}
-      footer={[
-        <Button key="back" onClick={onOpenCloseDialog}>
-          Return
-        </Button>,
-        <Button key="submit" type="primary" onClick={onOpenCloseDialog}>
-          Submit
-        </Button>,
-      ]}
+      footer={null}
       style={{ top: 20 }}
     >
       <div className="Content">
@@ -207,15 +247,10 @@ export default function ItemDialog({
             </div>
           </div>
 
-          {/* <div className="Content__main__deadline">
-            <div>Deadline: {deadLine}</div>
-          </div> */}
-
           <div className="Content__main__desc">
             <div className="Content__main__desc__title">
               <AlignLeftOutlined style={{ fontSize: "150%" }} />
               <span id="title">Desc</span>
-              <span id="btnEdit">Edit</span>
             </div>
             <div className="Content__main__desc__detail">
               <input
@@ -227,19 +262,74 @@ export default function ItemDialog({
             </div>
           </div>
 
+          <div className="Content__main__deadline">
+            <div>{moment(card_deadline.created_at).format("DD/MM/YYYY")}</div>
+
+            <div>{moment(card_deadline.deadline).format("DD/MM/YYYY")}</div>
+          </div>
+
           <div className="Content__main__work">
-            {taskList.map((task) => {
-              const { subTask_IDs } = task;
+            {card_taskLists.map((task) => {
+              const { taskList_ID } = task;
+              console.log("0000", taskList_ID);
+              const { subTask_IDs } = taskList_ID;
               return (
                 <>
                   <div className="Content__main__work__title">
                     <CheckSquareOutlined style={{ fontSize: "150%" }} />
-                    <span>Works</span>
-                    <span id="btnDelete">Delete</span>
+                    <span>{taskList_ID.taskList_name}</span>
+                    <span
+                      id="btnDelete"
+                      onClick={() =>
+                        handleDeleteWork(taskList_ID._id, taskList_ID.card_ID)
+                      }
+                    >
+                      Delete
+                    </span>
                   </div>
                   <div className="Content__main__work__detail">
-                    <Progress percent={percent} />
-                    {subTask_IDs.map((work, index) => {
+                    <ProgressBar itemArr={subTask_IDs} />
+
+                    {subTask_IDs.map((subTask) => {
+                      const { subTask_ID } = subTask;
+                      console.log("-----subTask_ID", subTask_ID);
+                      return (
+                        <div className="Content__main__work__detail__item">
+                          <div className="Content__main__work__detail__item__checkbox">
+                            <Checkbox
+                              checked={subTask_ID.subtask_checked}
+                              onClick={() =>
+                                handleSubTaskChecked(
+                                  subTask_ID._id,
+                                  subTask_ID.subtask_checked
+                                )
+                              }
+                            />
+                          </div>
+                          <div className="Content__main__work__detail__item__text">
+                            <p>{subTask_ID.subtask_info.content}</p>
+                          </div>
+                          <div
+                            className="Content__main__work__detail__item__remove"
+                            onClick={() =>
+                              handleDeleteSubTask(
+                                subTask_ID._id,
+                                subTask_ID.taskList_ID
+                              )
+                            }
+                          >
+                            <CloseOutlined />
+                          </div>
+                        </div>
+                      );
+                    })}
+
+                    <AddInput
+                      taskListID={taskList_ID._id}
+                      onReloadDialog={() => onReloadDialog(_id, userInTable)}
+                    />
+
+                    {/* {subTask_IDs.map((work, index) => {
                       return (
                         <div className="Content__main__work__detail__item">
                           <div className="Content__main__work__detail__item__checkbox">
@@ -262,7 +352,7 @@ export default function ItemDialog({
                           </Button>
                         </div>
                       );
-                    })}
+                    })} */}
                   </div>
                 </>
               );
@@ -306,7 +396,10 @@ export default function ItemDialog({
               <UserAddOutlined style={{ fontSize: "120%" }} />
               <span>Add new member</span>
             </div>
-            <div className="Content__sidebar__button__item">
+            <div
+              className="Content__sidebar__button__item"
+              onClick={handleAddNewWork}
+            >
               <CheckSquareOutlined style={{ fontSize: "120%" }} />
               <span>Add new work</span>
             </div>
@@ -317,6 +410,12 @@ export default function ItemDialog({
           </div>
         </div>
       </div>
+
+      <AddWorkModal
+        cardID={_id}
+        isOpenWorkModal={isOpenWorkModal}
+        onCloseWorkModal={handleCloseWorkModal}
+      />
     </Modal>
   );
 }

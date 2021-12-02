@@ -25,8 +25,6 @@ export default function FormModal({
       desc: cardDesc,
     };
 
-    console.log(newCard);
-
     await apiClient
       .post("/workspace/addWorkspace", newCard)
       .then((response) => {

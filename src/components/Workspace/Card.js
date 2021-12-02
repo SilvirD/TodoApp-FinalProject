@@ -138,7 +138,7 @@ const Card = ({
             style={{
               fontSize: "150%",
             }}
-            // onClick={() => handleDeleteWS(workspaceID)}
+            onClick={() => handleDeleteWS(workspaceID)}
           />
         </div>
       </div>
