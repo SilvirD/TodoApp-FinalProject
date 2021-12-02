@@ -1,7 +1,16 @@
-import { PlusCircleFilled } from "@ant-design/icons";
+import { PlusCircleFilled, CheckOutlined } from "@ant-design/icons";
 import { Dropdown, Menu, Tooltip } from "antd";
+import { apiClient } from "../../helper/api_client";
+import { useEffect, useState, useCallback, memo } from "react";
 
-const Card = ({ name, description, arrUser, onPageChange }) => {
+const Card = ({
+  name,
+  description,
+  arrUser,
+  workspaceID,
+  onFetchWorkspace,
+  onPageChange,
+}) => {
   const colorPallete = [
     "bg-red-400",
     "bg-yellow-400",
@@ -12,15 +21,70 @@ const Card = ({ name, description, arrUser, onPageChange }) => {
     "bg-pink-400",
   ];
 
+  const [userList, setUserList] = useState([]);
+  const [menuVisible, setMenuVisible] = useState(false);
+  const [randColor, setRandColor] = useState("");
+
+  const handleVisibleChange = () => {
+    setMenuVisible(!menuVisible);
+  };
+
+  useEffect(() => {
+    setRandColor(colorPallete[Math.floor(Math.random() * colorPallete.length)]);
+  }, []);
+
+  useEffect(() => {
+    apiClient.get(`/user`).then((response) => {
+      setUserList(response.data);
+    });
+  }, []);
+
+  const arrUserID = arrUser.map((user) => user.user_ID._id);
+  const handleMenuClick = (e) => {
+    if (arrUserID.includes(e.key)) {
+      apiClient
+        .patch(`/workspace/deleteUserWS/${workspaceID}`, {
+          user_ID: e.key,
+        })
+        .then((response) => onFetchWorkspace());
+    } else {
+      apiClient
+        .patch(`/workspace/addUserWS/${workspaceID}`, {
+          user_ID: e.key,
+        })
+        .then((response) => onFetchWorkspace());
+    }
+  };
+
+  const menu = (
+    <Menu onClick={handleMenuClick}>
+      {userList.map((user) => {
+        const { _id, email } = user;
+        return (
+          <Menu.Item key={_id}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                gap: "12px",
+              }}
+            >
+              {email}
+              {arrUser.map((arrUser) => arrUser.user_ID._id).includes(_id) && (
+                <CheckOutlined style={{ color: "green" }} />
+              )}
+            </div>
+          </Menu.Item>
+        );
+      })}
+    </Menu>
+  );
+
   return (
     <div className="card">
       <div className="card__info" onClick={onPageChange}>
-        <div
-          className={
-            colorPallete[Math.floor(Math.random() * colorPallete.length)] +
-            " select-none h-14 rounded-t-xl"
-          }
-        ></div>
+        <div className={`${randColor} select-none h-14 rounded-t-xl`}></div>
         <div className="card__info__title m-4">
           <h1>{name}</h1>
         </div>
@@ -37,16 +101,26 @@ const Card = ({ name, description, arrUser, onPageChange }) => {
             </Tooltip>
           );
         })}
-        <PlusCircleFilled
-          style={{
-            fontSize: "200%",
-            color: "rgb(181, 181, 181)",
-            paddingTop: "1px",
-          }}
-        />
+        <Dropdown
+          overlay={menu}
+          onVisibleChange={handleVisibleChange}
+          visible={menuVisible}
+        >
+          <div
+            className="ant-dropdown-link"
+            onClick={(e) => e.preventDefault()}
+          >
+            <PlusCircleFilled
+              style={{
+                fontSize: "200%",
+                color: "rgb(181, 181, 181)",
+                paddingTop: "1px",
+              }}
+            />
+          </div>
+        </Dropdown>
       </div>
     </div>
   );
 };
-
 export default Card;

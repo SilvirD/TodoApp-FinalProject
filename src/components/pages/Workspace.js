@@ -52,15 +52,19 @@ const Workspace = () => {
 
       <div className="browser">
         <div className="bar">
-          {cardInfo.map((card, index) => (
-            <Card
-              key={index}
-              name={card.workspace_name}
-              description={card.description}
-              arrUser={card.users_in_ws}
-              onPageChange={() => handlePageChange(card._id)}
-            />
-          ))}
+          {cardInfo.map((card, index) => {
+            return (
+              <Card
+                key={index}
+                name={card.workspace_name}
+                description={card.description}
+                arrUser={card.users_in_ws}
+                workspaceID={card._id}
+                onFetchWorkspace={handleSubmitForm}
+                onPageChange={() => handlePageChange(card._id)}
+              />
+            );
+          })}
           {/* <Card name={cardInfo[0].name} description={cardInfo[0].description} /> */}
         </div>
       </div>
