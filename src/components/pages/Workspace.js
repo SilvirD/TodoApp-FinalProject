@@ -4,6 +4,7 @@ import { apiClient } from "../../helper/api_client";
 import "../../styles/Workspace.scss";
 import Card from "../Workspace/Card";
 import FormModal from "../Workspace/FormModal";
+import { AppstoreOutlined } from "@ant-design/icons";
 
 const Workspace = () => {
   const history = useHistory();
@@ -31,13 +32,18 @@ const Workspace = () => {
   const handlePageChange = (id) => {
     history.push(`/recent/${id}`);
   };
-
   return (
     <div className="workspace">
-      <div className="toolbar">
-        <button className="btn-create" onClick={() => setIsOpen(true)}>
-          Tạo không gian mới
-        </button>
+      <div className="workspace__title">
+        <AppstoreOutlined
+          style={{ fontSize: "200%", paddingTop: "28px", marginRight: "10px" }}
+        />
+        <h1>Không gian của bạn</h1>
+        <div className="toolbar">
+          <button className="btn-create" onClick={() => setIsOpen(true)}>
+            Tạo không gian mới
+          </button>
+        </div>
       </div>
 
       <FormModal
@@ -49,17 +55,20 @@ const Workspace = () => {
       />
 
       <div className="browser">
-        <h1>Không gian của bạn</h1>
-
         <div className="bar">
-          {cardInfo.map((card, index) => (
-            <Card
-              key={index}
-              name={card.workspace_name}
-              description={card.description}
-              onPageChange={() => handlePageChange(card._id)}
-            />
-          ))}
+          {cardInfo.map((card, index) => {
+            return (
+              <Card
+                key={index}
+                name={card.workspace_name}
+                description={card.description}
+                arrUser={card.users_in_ws}
+                workspaceID={card._id}
+                onFetchWorkspace={handleSubmitForm}
+                onPageChange={() => handlePageChange(card._id)}
+              />
+            );
+          })}
           {/* <Card name={cardInfo[0].name} description={cardInfo[0].description} /> */}
         </div>
       </div>

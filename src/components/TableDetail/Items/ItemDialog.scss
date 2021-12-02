@@ -21,6 +21,7 @@
       }
       &__list {
         margin: 5px 0 0 30px;
+        display: flex;
         img {
           cursor: pointer;
           display: inline-block;
@@ -85,10 +86,17 @@
         &__item {
           display: flex;
           flex-direction: row;
+          margin-top: 5px;
 
-          button {
-            padding: 5px;
+          &__remove {
             margin-left: auto;
+            height: fit-content;
+            width: fit-content;
+            cursor: pointer;
+            border: 1px solid black;
+            border-radius: 2px;
+            padding: 5px;
+            display: flex;
           }
 
           &__text {

@@ -9,6 +9,10 @@
     text-overflow: ellipsis;
     margin: 0 2px 0 5px;
     background: inherit;
+    padding: 0 5px;
+  }
+  input:focus {
+    background-color: rgb(228, 228, 228);
   }
   span {
     padding: 10px;

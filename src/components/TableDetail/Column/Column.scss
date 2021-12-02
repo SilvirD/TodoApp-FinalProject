@@ -1,7 +1,6 @@
 .Column {
-  height: 70vh;
   min-width: 250px;
-  background-color: lavender;
+  background-color: #adc2a9;
   border-radius: 5px;
   margin-right: 20px;
   &__header {
@@ -21,7 +20,7 @@
     user-select: none;
 
     &__item {
-      background-color: turquoise;
+      background-color: #d3e4cd;
       border-radius: 2px;
       height: 50px;
       cursor: pointer;

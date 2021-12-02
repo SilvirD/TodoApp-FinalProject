@@ -6,10 +6,17 @@ import ItemDialog from "../Items/ItemDialog";
 import "./Column.scss";
 import { EllipsisOutlined } from "@ant-design/icons";
 
-export default function Column({ colIndex, colId, colName, cardItems }) {
+export default function Column({
+  colIndex,
+  colId,
+  colName,
+  cardItems,
+  userInTable,
+  onReloadCard,
+}) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [dialogContent, setDialogContent] = useState();
-  const [items, setItems] = useState(cardItems);
+  const [items, setItems] = useState([]);
 
   useEffect(() => {
     apiClient.patch(`/column/editColumn/${colId}`, {
@@ -19,12 +26,25 @@ export default function Column({ colIndex, colId, colName, cardItems }) {
     });
   }, [items]);
 
+  useEffect(() => {
+    setItems(cardItems);
+  }, [cardItems]);
+
+  const reloadDialog = (id, userInTable) => {
+    apiClient.get(`/card/${id}`).then((response) => {
+      const { data } = response.data;
+      setDialogContent({ ...data[0], userInTable });
+    });
+  };
+
   const handleOpenDialog = (dialogData) => {
     setIsDialogOpen(!isDialogOpen);
-    setDialogContent(dialogData);
+
+    reloadDialog(dialogData.itemKey, dialogData.userInTable);
   };
 
   const handleCloseDialog = () => {
+    onReloadCard();
     setDialogContent();
     setIsDialogOpen(!isDialogOpen);
   };
@@ -62,6 +82,7 @@ export default function Column({ colIndex, colId, colName, cardItems }) {
                     users_in_card,
                     card_deadline,
                   } = item.card_ID;
+
                   return (
                     <ColumnItem
                       key={_id}
@@ -71,6 +92,7 @@ export default function Column({ colIndex, colId, colName, cardItems }) {
                       content={card_desc}
                       onOpenDialog={handleOpenDialog}
                       members={users_in_card}
+                      userInTable={userInTable}
                       deadLine={card_deadline}
                     />
                   );
@@ -85,7 +107,8 @@ export default function Column({ colIndex, colId, colName, cardItems }) {
       <ItemDialog
         isDialogOpen={isDialogOpen}
         onOpenCloseDialog={handleCloseDialog}
-        {...dialogContent}
+        dialogContent={dialogContent}
+        onReloadDialog={reloadDialog}
       />
     </>
   );
