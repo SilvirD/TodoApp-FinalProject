@@ -13,7 +13,7 @@ const initialMsg = {
   msgPassword: "",
 };
 
-const Login = () => {
+const Login = ({ loginState, setLogState }) => {
   const history = useHistory();
 
   const [userInfo, setUserInfo] = useState(initialValue);
@@ -86,6 +86,7 @@ const Login = () => {
         .then((response) => {
           localStorage.setItem("tokenLogin", response.data);
           alert("login successfully");
+          setLogState(localStorage.getItem('tokenLogin'))
           history.push("/");
         })
         .catch((error) => {

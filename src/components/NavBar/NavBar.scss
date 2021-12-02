@@ -1,22 +1,9 @@
 .navlinks {
-  a {
-    color: black;
-    padding: 0 15px;
-    font-size: large;
-    font-weight: 500;
+  ul > li > a {
+    color: white;
   }
 }
-.brand-section {
-  font-size: 17px;
-  margin: 0;
-}
-.brand-section:hover {
-  background-color: rgb(117, 190, 230);
-  cursor: pointer;
-  transform: translateY(-5%);
-  transition-duration: 0.3s;
-  border-bottom: 5px solid white;
-}
-.profile:hover {
-  transition-duration: 0.2s;
+
+a {
+  color: white;
 }

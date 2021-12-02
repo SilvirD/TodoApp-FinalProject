@@ -28,8 +28,8 @@ body {
 
 .brand-section {
   @apply absolute top-1 left-3
-    cursor-pointer p-3 rounded-sm
-    hover:bg-blue-300 flex font-black;
+    cursor-pointer p-3 rounded-sm text-white
+    hover:bg-blue-300 hover:text-white flex font-black;
 }
 
 .navlinks {
