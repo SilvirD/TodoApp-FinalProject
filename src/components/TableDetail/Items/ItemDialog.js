@@ -208,7 +208,7 @@ export default function ItemDialog({
         <div className="Content__main">
           <div className="Content__main__members">
             <div className="Content__main__members__title">
-              <span>Member</span>
+              <span>Thành viên</span>
             </div>
             <div className="Content__main__members__list">
               {users_in_card.map((member) => {
@@ -246,7 +246,7 @@ export default function ItemDialog({
           <div className="Content__main__desc">
             <div className="Content__main__desc__title">
               <AlignLeftOutlined style={{ fontSize: "150%" }} />
-              <span id="title">Desc</span>
+              <span id="title">Mô tả</span>
             </div>
             <div className="Content__main__desc__detail">
               <input
@@ -258,10 +258,16 @@ export default function ItemDialog({
             </div>
           </div>
 
-          <div className="Content__main__deadline">
-            <div>{moment(card_deadline.created_at).format("DD/MM/YYYY")}</div>
+          <div className="Content__main__desc__deadline">
+            <div className="Content__main__desc__deadline__create">
+              <h3>Ngày tạo:</h3>
+              {moment(card_deadline.created_at).format("DD/MM/YYYY")}
+            </div>
 
-            <div>{moment(card_deadline.deadline).format("DD/MM/YYYY")}</div>
+            <div className="Content__main__desc__deadline__finish">
+              <h3>Hạn chót:</h3>
+              {moment(card_deadline.deadline).format("DD/MM/YYYY")}
+            </div>
           </div>
 
           <div className="Content__main__work">
@@ -280,7 +286,7 @@ export default function ItemDialog({
                         handleDeleteWork(taskList_ID._id, taskList_ID.card_ID)
                       }
                     >
-                      Delete
+                      Xóa
                     </span>
                   </div>
                   <div className="Content__main__work__detail">
@@ -358,8 +364,8 @@ export default function ItemDialog({
           <div className="Content__main__actions">
             <div className="Content__main__actions__title">
               <UnorderedListOutlined style={{ fontSize: "150%" }} />
-              <span>Actions</span>
-              <span id="btnHide">Hide</span>
+              <span>Hoạt động</span>
+              <span id="btnHide">Ẩn</span>
             </div>
             <div className="Content__main__actions__detail">
               <div className="Content__main__actions__detail__content">
@@ -386,21 +392,22 @@ export default function ItemDialog({
           </div>
         </div>
         <div className="Content__sidebar">
-          <span>Add to card</span>
+          <span>Thêm vào thẻ</span>
           <div className="Content__sidebar__button">
             <div className="Content__sidebar__button__item">
               <UserAddOutlined style={{ fontSize: "120%" }} />
-              <span>Add new member</span>
+              <span>Thêm thành viên</span>
             </div>
             <div
               className="Content__sidebar__button__item"
               onClick={handleAddNewWork}
             >
               <CheckSquareOutlined style={{ fontSize: "120%" }} />
-              <span>Add new work</span>
+              <span>Thêm công việc</span>
             </div>
             <div className="Content__sidebar__button__item">
               <FieldTimeOutlined style={{ fontSize: "120%" }} />
+              <span>Thêm deadline</span>
               <DatePicker value={deadLine} onChange={handleDateChange} />
             </div>
           </div>
