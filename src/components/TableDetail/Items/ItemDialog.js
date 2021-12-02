@@ -192,10 +192,6 @@ export default function ItemDialog({
         subtask_checked: !currentCheck,
       })
       .then((response) => onReloadDialog(_id, userInTable));
-
-    apiClient
-      .patch(`/subtask/checkSubTask/${subTaskID}`)
-      .then((response) => onReloadDialog(_id, userInTable));
   };
 
   return (
