@@ -330,31 +330,6 @@ export default function ItemDialog({
                       taskListID={taskList_ID._id}
                       onReloadDialog={() => onReloadDialog(_id, userInTable)}
                     />
-
-                    {/* {subTask_IDs.map((work, index) => {
-                      return (
-                        <div className="Content__main__work__detail__item">
-                          <div className="Content__main__work__detail__item__checkbox">
-                            <Checkbox
-                              checked={work.checked}
-                              onChange={(e) => {
-                                work.checked = !work.checked;
-                                setSubTasks([...subTask_IDs]);
-                              }}
-                            />
-                          </div>
-                          <div className="Content__main__work__detail__item__text">
-                            <p>{work.content}</p>
-                          </div>
-                          <Button
-                            type="button"
-                            onClick={() => handleDeleteWork(work.id)}
-                          >
-                            X
-                          </Button>
-                        </div>
-                      );
-                    })} */}
                   </div>
                 </>
               );

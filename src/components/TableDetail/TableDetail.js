@@ -5,7 +5,7 @@ import {
   StarOutlined,
   UserAddOutlined,
 } from "@ant-design/icons";
-import { Dropdown, Menu, Tooltip } from "antd";
+import { Button, Dropdown, Input, Menu, Modal, Tooltip } from "antd";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { apiClient } from "../../helper/api_client";
@@ -24,6 +24,10 @@ export default function Table() {
   const [userInTable, setUserInTable] = useState([]);
   const [newData, setNewData] = useState();
   const [menuVisible, setMenuVisible] = useState(false);
+
+  const [colName, setColName] = useState("");
+
+  const [isColDialogOpen, setIsColDialogOpen] = useState(false);
 
   const params = useParams();
   const tableId = params.id;
@@ -68,6 +72,14 @@ export default function Table() {
 
   const handleChangeInput = (e) => {
     setTableName(e.target.value);
+  };
+
+  const handleColNameChange = (e) => {
+    setColName(e.target.value);
+  };
+
+  const handleOpenColDialog = () => {
+    setIsColDialogOpen(!isColDialogOpen);
   };
 
   const handleSubmitTableName = (e) => {
@@ -136,6 +148,22 @@ export default function Table() {
     </Menu>
   );
 
+  const handleCreateCol = () => {
+    if (colName) {
+      apiClient
+        .post("/column/addColumn", {
+          table_ID: tableId,
+          name: colName,
+        })
+        .then((response) => {
+          handleReloadCard();
+          handleOpenColDialog();
+        });
+
+      setColName("");
+    }
+  };
+
   return (
     <>
       <div className="Table__Menu">
@@ -202,8 +230,30 @@ export default function Table() {
             />
           );
         })}
-        <div className="Table__Item__Add">Thêm cột mới</div>
+        <div className="Table__Item__Add" onClick={handleOpenColDialog}>
+          Thêm cột mới
+        </div>
       </div>
+
+      <Modal
+        visible={isColDialogOpen}
+        title="Thêm cột mới"
+        onCancel={handleOpenColDialog}
+        width={300}
+        footer={[
+          <Button key="submit" type="primary" onClick={handleCreateCol}>
+            Submit
+          </Button>,
+        ]}
+        style={{ top: 100 }}
+      >
+        <div className="workModal">
+          <div className="workModal__name">
+            Tên cột:
+            <Input value={colName} onChange={(e) => handleColNameChange(e)} />
+          </div>
+        </div>
+      </Modal>
     </>
   );
 }

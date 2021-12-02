@@ -46,6 +46,20 @@
     cursor: pointer;
   }
 }
+
+.Table__Item {
+  display: flex;
+  margin: 10px;
+  overflow-x: auto;
+
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 .Table__Item__Add {
   height: fit-content;
   min-width: 250px;
