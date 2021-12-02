@@ -40,7 +40,8 @@ function App() {
             backgroundPosition: "center",
             backgroundSize: "cover",
             backgroundRepeat: "no-repeat",
-            height: "inherit",
+            backgroundAttachment: "fixed",
+            height: "100%",
           }}
         >
           <NavBar

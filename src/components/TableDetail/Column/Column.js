@@ -4,7 +4,7 @@ import { apiClient } from "../../../helper/api_client";
 import ColumnItem from "../Items/ColumnItem";
 import ItemDialog from "../Items/ItemDialog";
 import "./Column.scss";
-import { EllipsisOutlined } from "@ant-design/icons";
+import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 
 export default function Column({
   colIndex,
@@ -70,7 +70,7 @@ export default function Column({
               <div className="Column__header">
                 <div className="Column__header__main">{colName}</div>
                 <div className="Column__header__sub">
-                  <EllipsisOutlined />
+                  <DeleteOutlined />
                 </div>
               </div>
               <div className="Column__body">
@@ -97,6 +97,9 @@ export default function Column({
                     />
                   );
                 })}
+                <div className="Column__body__add">
+                  <span>Thêm thẻ mới</span>
+                </div>
               </div>
               {provided.placeholder}
             </div>

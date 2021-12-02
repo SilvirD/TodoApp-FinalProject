@@ -29,19 +29,21 @@ export default function ColumnItem({
   };
 
   return (
-    <Draggable draggableId={itemKey} index={itemIndex}>
-      {(provided) => (
-        <div
-          className="Column__body__item"
-          onClick={handleDialog}
-          {...provided.draggableProps}
-          ref={provided.innerRef}
-          {...provided.dragHandleProps}
-        >
-          <div className="Column__body__item__title">{title}</div>
-          <div className="Column__body__item__content">{content}</div>
-        </div>
-      )}
-    </Draggable>
+    <>
+      <Draggable draggableId={itemKey} index={itemIndex}>
+        {(provided) => (
+          <div
+            className="Column__body__item"
+            onClick={handleDialog}
+            {...provided.draggableProps}
+            ref={provided.innerRef}
+            {...provided.dragHandleProps}
+          >
+            <div className="Column__body__item__title">{title}</div>
+            <div className="Column__body__item__content">{content}</div>
+          </div>
+        )}
+      </Draggable>
+    </>
   );
 }

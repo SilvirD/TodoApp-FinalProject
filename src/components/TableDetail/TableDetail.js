@@ -202,6 +202,7 @@ export default function Table() {
             />
           );
         })}
+        <div className="Table__Item__Add">Thêm cột mới</div>
       </div>
     </>
   );

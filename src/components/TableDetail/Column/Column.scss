@@ -13,6 +13,7 @@
     &__sub {
       margin-left: auto;
       padding: 0 10px;
+      margin-top: -3px;
     }
   }
 
@@ -26,6 +27,17 @@
       cursor: pointer;
       margin: 10px 5px;
       padding-left: 5px;
+    }
+
+    &__add {
+      text-align: center;
+      height: fit-content;
+      min-width: 250px;
+      background-color: #adc2a9;
+      padding: 5px 0 5px 5px;
+      border-radius: 0 0 5px 5px;
+      cursor: pointer;
+      border-top: 1px solid whitesmoke;
     }
   }
 }
