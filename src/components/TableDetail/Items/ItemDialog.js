@@ -40,8 +40,9 @@ export default function ItemDialog({
 
   const [taskList, setTaskList] = useState([]);
   const [subTasks, setSubTasks] = useState([]);
-  const [deadLine, setDeadline] = useState("");
+  const [deadLine, setDeadline] = useState(moment());
   const [newData, setNewData] = useState();
+  const [dialogDesc, setDialogDesc] = useState("");
   const [menuVisible, setMenuVisible] = useState(false);
 
   // useEffect(() => {
@@ -53,15 +54,23 @@ export default function ItemDialog({
   //   }
   // }, [newData]);
 
-  // useEffect(() => {
-  //   if (itemKey) {
-  //     apiClient.patch(`card/editCard/${itemKey}`, {
-  //       card_deadline: {
-  //         deadline: deadLine,
-  //       },
-  //     });
-  //   }
-  // }, [deadLine]);
+  useEffect(() => {
+    if (_id && deadLine) {
+      apiClient
+        .patch(`card/editCard/${_id}`, {
+          card_deadline: {
+            deadline: deadLine,
+          },
+        })
+        .then((response) => {
+          onReloadDialog(_id, userInTable);
+        });
+    }
+  }, [deadLine]);
+
+  useEffect(() => {
+    setDialogDesc(card_desc);
+  }, [card_desc]);
 
   const percent = useMemo(() => {
     const checkedTask = subTasks.reduce(
@@ -77,11 +86,27 @@ export default function ItemDialog({
   };
 
   const handleDateChange = (date, dateString) => {
-    setDeadline(moment.utc(dateString));
+    const dateFormat = moment(dateString);
+    console.log(moment(dateString).toISOString());
+    setDeadline(dateFormat);
   };
 
   const handleVisibleChange = () => {
     setMenuVisible(!menuVisible);
+  };
+
+  const handleChangeInput = (e) => {
+    setDialogDesc(e.target.value);
+  };
+
+  const handleSubmitCardDesc = (e) => {
+    apiClient
+      .patch(`/card/editCard/${_id}`, {
+        card_desc: dialogDesc,
+      })
+      .then((response) => {
+        onReloadDialog(_id, userInTable);
+      });
   };
 
   const memberIDs = users_in_card.map((member) => member.user_ID._id);
@@ -193,12 +218,12 @@ export default function ItemDialog({
               <span id="btnEdit">Edit</span>
             </div>
             <div className="Content__main__desc__detail">
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde
-                voluptatibus animi aut dolore enim, magni beatae! Odit, minus
-                atque magnam, repellat a dolorum blanditiis fugiat unde quod
-                aperiam facilis vel.
-              </p>
+              <input
+                type="text"
+                value={dialogDesc}
+                onChange={(e) => handleChangeInput(e)}
+                onBlur={handleSubmitCardDesc}
+              />
             </div>
           </div>
 

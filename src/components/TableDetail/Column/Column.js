@@ -12,10 +12,11 @@ export default function Column({
   colName,
   cardItems,
   userInTable,
+  onReloadCard,
 }) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [dialogContent, setDialogContent] = useState();
-  const [items, setItems] = useState(cardItems);
+  const [items, setItems] = useState([]);
 
   useEffect(() => {
     apiClient.patch(`/column/editColumn/${colId}`, {
@@ -24,6 +25,10 @@ export default function Column({
       })),
     });
   }, [items]);
+
+  useEffect(() => {
+    setItems(cardItems);
+  }, [cardItems]);
 
   const reloadDialog = (id, userInTable) => {
     apiClient.get(`/card/${id}`).then((response) => {
@@ -39,6 +44,7 @@ export default function Column({
   };
 
   const handleCloseDialog = () => {
+    onReloadCard();
     setDialogContent();
     setIsDialogOpen(!isDialogOpen);
   };

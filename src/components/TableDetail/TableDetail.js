@@ -29,6 +29,13 @@ export default function Table() {
   const tableId = params.id;
   const { _id, star, users_in_table } = tableDetail;
 
+  const handleReloadCard = () => {
+    apiClient.get(`/column/${tableId}`).then((response) => {
+      const { data } = response.data;
+      setColumns(data);
+    });
+  };
+
   useEffect(() => {
     apiClient.get(`/table/${tableId}`).then((response) => {
       const { data } = response.data;
@@ -191,6 +198,7 @@ export default function Table() {
               colName={column_name}
               cardItems={card_IDs}
               userInTable={userInTable}
+              onReloadCard={handleReloadCard}
             />
           );
         })}
