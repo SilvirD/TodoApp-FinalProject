@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Button, Checkbox, Modal, Progress } from "antd";
+import { Dropdown, Menu, Tooltip } from "antd";
 import "antd/dist/antd.css";
 import {
   StarFilled,
   StarOutlined,
   UserOutlined,
   PlusOutlined,
+  TeamOutlined,
 } from "@ant-design/icons";
 import "./Table.scss";
 import { apiClient } from "../../helper/api_client";
@@ -22,6 +24,10 @@ function Table() {
   const [newTable, setNewTable] = useState({});
   const [openModal, setOpenModal] = useState(false);
   const [tableTitle, setTableTitle] = useState("");
+  const [wsInfo, setWsInfo] = useState({
+    workspace_name: "",
+    users_in_ws: [],
+  });
 
   useEffect(() => {
     apiClient.get(`/table/ws/${workspaceId}`).then((response) => {
@@ -29,6 +35,25 @@ function Table() {
       setTableItems(data);
     });
   }, [newTable]);
+
+  useEffect(() => {
+    apiClient.get(`/workspace/${workspaceId}`).then((response) => {
+      setWsInfo(response.data);
+    });
+  }, []);
+
+  const handleChangeInput = (e) => {
+    setWsInfo({
+      workspace_name: e.target.value,
+    });
+    console.log(e);
+  };
+
+  const handleSubmitWorkspaceName = (e) => {
+    apiClient.patch(`/workspace/editWorkspace/${workspaceId}`, {
+      workspace_name: wsInfo.workspace_name,
+    });
+  };
 
   const handleMarkedTable = (tableId, currStar) => {
     apiClient
@@ -67,6 +92,34 @@ function Table() {
 
   return (
     <>
+      <div className="Table__Workspace">
+        <input
+          className="Table__Workspace__Input"
+          type="text"
+          value={wsInfo.workspace_name.toLocaleUpperCase()}
+          onChange={(e) => handleChangeInput(e)}
+          onBlur={handleSubmitWorkspaceName}
+        />
+      </div>
+      <div className="Table">
+        <div className="Table__Title">
+          <TeamOutlined style={{ fontSize: "150%" }} />
+          <span> Thành viên</span>
+        </div>
+        <div className="Table__UserList">
+          {wsInfo.users_in_ws.map((user) => {
+            const { username } = user.user_ID;
+            return (
+              <Tooltip placement="bottom" title={username}>
+                <img
+                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcKj1fruVtsXkI7teuyk4KqBoKr9SVaEA7IA&usqp=CAU"
+                  alt=""
+                />
+              </Tooltip>
+            );
+          })}
+        </div>
+      </div>
       <div className="Table">
         <div className="Table__Title">
           <StarOutlined style={{ fontSize: "150%" }} />
@@ -91,7 +144,7 @@ function Table() {
           })}
         </div>
       </div>
-      <div className="Table">
+      <div className="Table" style={{ paddingBottom: "16px" }}>
         <div className="Table__Title">
           <UserOutlined style={{ fontSize: "150%" }} />
           <span> Bảng cá nhân</span>

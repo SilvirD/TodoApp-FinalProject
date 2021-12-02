@@ -35,7 +35,7 @@ function App() {
             backgroundPosition: "center",
             backgroundSize: "cover",
             backgroundRepeat: "no-repeat",
-            height: "100vh",
+            height: "inherit",
           }}
         >
           <NavBar

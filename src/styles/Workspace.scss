@@ -25,41 +25,56 @@
     .bar {
       @apply my-4 grid gap-4;
       grid-template-columns: repeat(auto-fill, minmax(269px, 1fr));
-
-      .card {
-        @apply bg-gray-100 rounded-xl cursor-pointer hover:shadow-2xl transition-shadow duration-500;
-        width: 295px;
-        height: 170px;
+      &__info {
         position: relative;
-        &__info {
-          &__title {
-            h1 {
-              @apply text-3xl;
-              font-weight: bold;
-              white-space: nowrap;
-              overflow: hidden;
-              text-overflow: ellipsis;
+        width: fit-content;
+        .card {
+          @apply bg-gray-100 rounded-xl cursor-pointer hover:shadow-2xl transition-shadow duration-500;
+          width: 295px;
+          height: 170px;
+          &__info {
+            &__title {
+              h1 {
+                @apply text-3xl;
+                font-weight: bold;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+              }
+            }
+          }
+          &__users {
+            position: absolute;
+            width: 100%;
+            display: flex;
+            margin-left: 15px;
+            img {
+              cursor: pointer;
+              display: inline-block;
+              width: 30px;
+              height: 30px;
+              border-radius: 50%;
+              margin-bottom: 10px;
             }
           }
         }
-        &__users {
+        .delete {
           position: absolute;
-          width: 100%;
-          display: flex;
-          margin-left: 15px;
-          img {
-            cursor: pointer;
-            display: inline-block;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            margin-bottom: 10px;
-          }
+          right: 15px;
+          top: 15px;
+          width: fit-content;
+          height: fit-content;
+          opacity: 0;
         }
       }
-      .card:hover {
+      &__info:hover {
         transform: scale(1.03);
         transition: 0.3s;
+        .delete {
+          opacity: 1;
+          transition-duration: 0.3s;
+          cursor: pointer;
+        }
       }
     }
   }

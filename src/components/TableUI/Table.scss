@@ -1,5 +1,16 @@
 .Table {
-  padding: 16px;
+  padding: 16px 16px 0px 16px;
+  &__Workspace {
+    border-bottom: 3px solid #8f8f8f;
+    text-align: center;
+    &__Input {
+      text-align: center;
+      font-size: 2rem;
+      font-weight: 700;
+      width: fit-content;
+      background-color: inherit;
+    }
+  }
   &__Title {
     span {
       vertical-align: middle;
@@ -118,6 +129,16 @@
         transform: translateX(0%);
         transition-duration: 0.3s;
       }
+    }
+  }
+  &__UserList {
+    margin-left: 30px;
+    img {
+      cursor: pointer;
+      display: inline-block;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
     }
   }
 }
