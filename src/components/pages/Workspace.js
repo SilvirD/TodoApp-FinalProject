@@ -12,6 +12,10 @@ const Workspace = () => {
 
   let userToken = localStorage.getItem("tokenLogin");
 
+  if (!userToken) {
+    history.push('/login')
+  }
+
   useEffect(() => {
     handleSubmitForm();
   }, []);

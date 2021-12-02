@@ -10,6 +10,7 @@ import Home from "./components/pages/Home"
 import UserDialog from "./components/common/UserDialog";
 import MobileMenu from "./components/common/MobileMenu";
 import { useEffect, useState } from "react";
+import { useHistory } from "react-router";
 import TableDetail from "./components/TableDetail/TableDetail";
 import imageList from "./images/index";
 
@@ -20,6 +21,8 @@ function App() {
 
   const imgList = Object.values(imageList);
   const randImg = imgList[Math.floor(Math.random() * imgList.length)];
+  let userToken = localStorage.getItem("tokenLogin");
+  const history = useHistory();
 
   const [background, setBackground] = useState("");
 
