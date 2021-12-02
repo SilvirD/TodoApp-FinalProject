@@ -1,26 +1,77 @@
 .workspace {
   @apply flex flex-col p-4;
-  .toolbar {
-    @apply ml-auto;
-    .btn-create {
-      @apply bg-blue-400 text-white rounded-sm p-4;
-    }
-  }
-
-  .browser {
+  &__title {
+    display: flex;
     h1 {
       @apply font-bold text-4xl mt-5;
+      display: inline-block;
+      cursor: context-menu;
     }
-
+    .toolbar {
+      @apply ml-auto;
+      .btn-create {
+        @apply bg-blue-400 text-white rounded-sm p-4;
+        width: fit-content;
+        margin-top: 15px;
+        border-radius: 5px;
+      }
+      .btn-create:hover {
+        box-shadow: inset 10em 10em rgb(49, 79, 155);
+        transition-duration: 0.8s;
+      }
+    }
+  }
+  .browser {
     .bar {
       @apply my-4 grid gap-4;
       grid-template-columns: repeat(auto-fill, minmax(269px, 1fr));
-
-      .card {
-        @apply bg-gray-100 rounded-sm cursor-pointer hover:shadow-xl transition-shadow duration-500;
-
-        h1 {
-          @apply font-bold text-3xl;
+      &__info {
+        position: relative;
+        .card {
+          @apply bg-gray-100 rounded-xl cursor-pointer hover:shadow-2xl transition-shadow duration-500;
+          height: 170px;
+          &__info {
+            &__title {
+              h1 {
+                @apply text-3xl;
+                font-weight: bold;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+              }
+            }
+          }
+          &__users {
+            position: absolute;
+            width: 100%;
+            display: flex;
+            margin-left: 15px;
+            img {
+              cursor: pointer;
+              display: inline-block;
+              width: 30px;
+              height: 30px;
+              border-radius: 50%;
+              margin-bottom: 10px;
+            }
+          }
+        }
+        .delete {
+          position: absolute;
+          right: 15px;
+          top: 15px;
+          width: fit-content;
+          height: fit-content;
+          opacity: 0;
+        }
+      }
+      &__info:hover {
+        transform: scale(1.03);
+        transition: 0.3s;
+        .delete {
+          opacity: 1;
+          transition-duration: 0.3s;
+          cursor: pointer;
         }
       }
     }

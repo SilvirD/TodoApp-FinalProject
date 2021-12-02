@@ -7,9 +7,11 @@
     box-sizing: border-box;
     width: 75%;
     margin-right: 5px;
+    padding-right: 10px;
+    border-right: 1px solid lightslategray;
 
     &__members {
-      margin-bottom: 32px;
+      margin-bottom: 24px;
       &__title {
         span {
           font-weight: 600;
@@ -21,6 +23,7 @@
       }
       &__list {
         margin: 5px 0 0 30px;
+        display: flex;
         img {
           cursor: pointer;
           display: inline-block;
@@ -39,7 +42,7 @@
     }
 
     &__desc {
-      margin-bottom: 32px;
+      margin-bottom: 24px;
       &__title {
         span {
           vertical-align: middle;
@@ -61,34 +64,70 @@
         p {
           margin: 5px 30px;
         }
+        input {
+          width: 100%;
+          padding: 5px;
+        }
+        input:focus {
+          background-color: lightgrey;
+        }
+      }
+      &__deadline {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 24px;
+        &__create {
+          display: flex;
+          h3 {
+            margin-right: 5px;
+          }
+        }
+        &__finish {
+          display: flex;
+          h3 {
+            margin-right: 5px;
+          }
+        }
       }
     }
 
     &__work {
-      margin-bottom: 32px;
+      margin-bottom: 24px;
 
       &__title {
         display: flex;
         span {
           vertical-align: middle;
           margin: 0 10px 0 0;
+          padding-top: 5px;
         }
         #btnDelete {
           margin-left: auto;
-          background-color: rgb(181, 181, 181);
+          border: 1px solid lightgrey;
           padding: 6px 12px;
           cursor: pointer;
           border-radius: 2px;
+        }
+        #btnDelete:hover {
+          color: dodgerblue;
+          border: 1px solid dodgerblue;
         }
       }
       &__detail {
         &__item {
           display: flex;
           flex-direction: row;
+          margin-top: 5px;
 
-          button {
-            padding: 5px;
+          &__remove {
             margin-left: auto;
+            height: fit-content;
+            width: fit-content;
+            cursor: pointer;
+            border: 1px solid black;
+            border-radius: 2px;
+            padding: 5px;
+            display: flex;
           }
 
           &__text {
@@ -105,13 +144,18 @@
         span {
           vertical-align: middle;
           margin: 0 10px 0 0;
+          padding-top: 5px;
         }
         #btnHide {
           margin-left: auto;
-          background-color: rgb(181, 181, 181);
+          border: 1px solid lightgrey;
           padding: 6px 12px;
           cursor: pointer;
           border-radius: 2px;
+        }
+        #btnHide:hover {
+          color: dodgerblue;
+          border: 1px solid dodgerblue;
         }
       }
       &__detail {

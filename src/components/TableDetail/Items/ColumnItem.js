@@ -13,6 +13,7 @@ export default function ColumnItem({
   itemIndex,
   itemKey,
   members,
+  userInTable,
   deadLine,
 }) {
   const handleDialog = () => {
@@ -21,25 +22,28 @@ export default function ColumnItem({
       content,
       longContent,
       members,
+      userInTable,
       itemKey,
       deadLine,
     });
   };
 
   return (
-    <Draggable draggableId={itemKey} index={itemIndex}>
-      {(provided) => (
-        <div
-          className="Column__body__item"
-          onClick={handleDialog}
-          {...provided.draggableProps}
-          ref={provided.innerRef}
-          {...provided.dragHandleProps}
-        >
-          <div className="Column__body__item__title">{title}</div>
-          <div className="Column__body__item__content">{content}</div>
-        </div>
-      )}
-    </Draggable>
+    <>
+      <Draggable draggableId={itemKey} index={itemIndex}>
+        {(provided) => (
+          <div
+            className="Column__body__item"
+            onClick={handleDialog}
+            {...provided.draggableProps}
+            ref={provided.innerRef}
+            {...provided.dragHandleProps}
+          >
+            <div className="Column__body__item__title">{title}</div>
+            <div className="Column__body__item__content">{content}</div>
+          </div>
+        )}
+      </Draggable>
+    </>
   );
 }

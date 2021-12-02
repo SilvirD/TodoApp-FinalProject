@@ -9,6 +9,10 @@
     text-overflow: ellipsis;
     margin: 0 2px 0 5px;
     background: inherit;
+    padding: 0 5px;
+  }
+  input:focus {
+    background-color: rgb(228, 228, 228);
   }
   span {
     padding: 10px;
@@ -41,4 +45,27 @@
     margin-left: auto;
     cursor: pointer;
   }
+}
+
+.Table__Item {
+  display: flex;
+  margin: 10px;
+  overflow-x: auto;
+
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.Table__Item__Add {
+  height: fit-content;
+  min-width: 250px;
+  text-align: center;
+  background-color: #adc2a9;
+  padding: 5px 0;
+  border-radius: 5px;
+  cursor: pointer;
 }

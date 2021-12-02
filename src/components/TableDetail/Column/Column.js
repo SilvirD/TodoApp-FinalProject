@@ -4,12 +4,26 @@ import { apiClient } from "../../../helper/api_client";
 import ColumnItem from "../Items/ColumnItem";
 import ItemDialog from "../Items/ItemDialog";
 import "./Column.scss";
-import { EllipsisOutlined } from "@ant-design/icons";
+import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
+import { Button, Input, Modal } from "antd";
+import { useParams } from "react-router";
 
-export default function Column({ colIndex, colId, colName, cardItems }) {
+export default function Column({
+  colIndex,
+  colId,
+  colName,
+  cardItems,
+  userInTable,
+  onReloadCard,
+}) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [dialogContent, setDialogContent] = useState();
-  const [items, setItems] = useState(cardItems);
+  const [items, setItems] = useState([]);
+  const [isColDialogOpen, setIsColDialogOpen] = useState(false);
+  const [cardName, setCardName] = useState("");
+
+  const params = useParams();
+  const tableId = params.id;
 
   useEffect(() => {
     apiClient.patch(`/column/editColumn/${colId}`, {
@@ -19,14 +33,59 @@ export default function Column({ colIndex, colId, colName, cardItems }) {
     });
   }, [items]);
 
+  useEffect(() => {
+    setItems(cardItems);
+  }, [cardItems]);
+
+  const reloadDialog = (id, userInTable) => {
+    apiClient.get(`/card/${id}`).then((response) => {
+      const { data } = response.data;
+      setDialogContent({ ...data[0], userInTable });
+    });
+  };
+
+  const handleCardNameChange = (e) => {
+    setCardName(e.target.value);
+  };
+
   const handleOpenDialog = (dialogData) => {
     setIsDialogOpen(!isDialogOpen);
-    setDialogContent(dialogData);
+
+    reloadDialog(dialogData.itemKey, dialogData.userInTable);
+  };
+
+  const handleOpenColDialog = () => {
+    setIsColDialogOpen(!isColDialogOpen);
+  };
+
+  const handleCreateCard = () => {
+    if (cardName) {
+      apiClient
+        .post("/card/addCard", {
+          column_ID: colId,
+          name: cardName,
+        })
+        .then((response) => {
+          setIsColDialogOpen();
+          onReloadCard();
+        });
+
+      setCardName("");
+    }
   };
 
   const handleCloseDialog = () => {
+    onReloadCard();
     setDialogContent();
     setIsDialogOpen(!isDialogOpen);
+  };
+
+  const handleDeleteCol = () => {
+    apiClient
+      .delete(`column/deleteColumn/${colId}`, {
+        tableID: tableId,
+      })
+      .then((response) => onReloadCard());
   };
 
   const handleOnDragEnd = (result) => {
@@ -49,8 +108,12 @@ export default function Column({ colIndex, colId, colName, cardItems }) {
             >
               <div className="Column__header">
                 <div className="Column__header__main">{colName}</div>
-                <div className="Column__header__sub">
-                  <EllipsisOutlined />
+                <div
+                  className="Column__header__sub"
+                  onClick={handleDeleteCol}
+                  style={{ cursor: "pointer" }}
+                >
+                  <DeleteOutlined />
                 </div>
               </div>
               <div className="Column__body">
@@ -62,6 +125,7 @@ export default function Column({ colIndex, colId, colName, cardItems }) {
                     users_in_card,
                     card_deadline,
                   } = item.card_ID;
+
                   return (
                     <ColumnItem
                       key={_id}
@@ -71,10 +135,17 @@ export default function Column({ colIndex, colId, colName, cardItems }) {
                       content={card_desc}
                       onOpenDialog={handleOpenDialog}
                       members={users_in_card}
+                      userInTable={userInTable}
                       deadLine={card_deadline}
                     />
                   );
                 })}
+                <div
+                  className="Column__body__add"
+                  onClick={handleOpenColDialog}
+                >
+                  <span>Thêm thẻ mới</span>
+                </div>
               </div>
               {provided.placeholder}
             </div>
@@ -82,10 +153,31 @@ export default function Column({ colIndex, colId, colName, cardItems }) {
         </Droppable>
       </DragDropContext>
 
+      <Modal
+        visible={isColDialogOpen}
+        title="Add new card"
+        width={300}
+        onCancel={handleOpenColDialog}
+        footer={[
+          <Button key="submit" type="primary" onClick={handleCreateCard}>
+            Submit
+          </Button>,
+        ]}
+        style={{ top: 100 }}
+      >
+        <div className="workModal">
+          <div className="workModal__name">
+            Card name:
+            <Input value={cardName} onChange={(e) => handleCardNameChange(e)} />
+          </div>
+        </div>
+      </Modal>
+
       <ItemDialog
         isDialogOpen={isDialogOpen}
         onOpenCloseDialog={handleCloseDialog}
-        {...dialogContent}
+        dialogContent={dialogContent}
+        onReloadDialog={reloadDialog}
       />
     </>
   );

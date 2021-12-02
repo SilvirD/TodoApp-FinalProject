@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans&display=swap");
 
 * {
   box-sizing: border-box;
@@ -11,9 +11,12 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
+  height: 100%;
+  #root {
+    height: 100%;
+  }
 }
-
 .navbar {
   height: 58px;
   @apply flex relative
@@ -24,8 +27,8 @@ body {
 
 .brand-section {
   @apply absolute top-1 left-3
-    cursor-pointer p-3 rounded-sm
-    hover:bg-blue-300 flex font-black;
+    cursor-pointer p-3 rounded-sm text-white
+    hover:bg-blue-300 hover:text-white flex font-black;
 }
 
 .navlinks {

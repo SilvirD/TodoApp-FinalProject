@@ -23,7 +23,6 @@ export default function FormModal({
     let newCard = {
       name: cardName,
       desc: cardDesc,
-      userToken: localStorage.getItem("tokenLogin"),
     };
 
     await apiClient

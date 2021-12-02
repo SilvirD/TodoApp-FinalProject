@@ -17,7 +17,7 @@ const initialMsg = {
   msgRePassword: "",
 };
 
-const Register = () => {
+const Register = ({ loginState, setLogState }) => {
   const [userInfo, setUserInfo] = useState(initialValue);
   const [errorMsg, setErrorMsg] = useState(initialMsg);
   const [repo, setRepo] = useState([]);
@@ -63,6 +63,7 @@ const Register = () => {
           alert("add user successfully");
           setErrorMsg(initialMsg);
           setUserInfo(initialValue);
+          setLogState(localStorage.getItem('tokenLogin'))
         })
         .catch((error) => {
           alert("error send data", error);

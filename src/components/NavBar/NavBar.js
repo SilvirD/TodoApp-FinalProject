@@ -3,8 +3,11 @@ import { Link } from "react-router-dom";
 
 import "./NavBar.scss";
 
-const NavBar = ({ userModal, setUserModal, mobileMenu, setMobileMenu }) => {
+
+const NavBar = ({ userModal, setUserModal, mobileMenu, setMobileMenu, loginState }) => {
+
   const ICONSIZE = 24;
+
 
   const toggleMobileMenu = (mobileMenu) => {
     if (!mobileMenu) {
@@ -20,37 +23,40 @@ const NavBar = ({ userModal, setUserModal, mobileMenu, setMobileMenu }) => {
 
   return (
     <nav className="navbar">
-      <h1 className="brand-section">
+      <Link to="/home" className="brand-section">
         <AiOutlineNumber size={ICONSIZE} /> greello
-      </h1>
+        </Link>
 
-      <div className="navlinks">
-        <ul>
-          <li>
-            <Link to="/">Không gian</Link>
-          </li>
-          <li>
-            <Link to="/recent">Gần đây</Link>
-          </li>
-          <li>
-            <Link to="/bookmark">Đánh dấu</Link>
-          </li>
-          <li>
-            <Link to="/notification">Thông báo</Link>
-          </li>
-        </ul>
-      </div>
+      {
+        loginState &&
+        <div className="navlinks">
+          <ul>
+            <li>
+              <Link to="/">Không gian</Link>
+            </li>
+            <li>
+              <Link to="/recent">Gần đây</Link>
+            </li>
+            <li>
+              <Link to="/bookmark">Đánh dấu</Link>
+            </li>
+            <li>
+              <Link to="/notification">Thông báo</Link>
+            </li>
+          </ul>
+        </div>
+      }
 
-      <div className="flex absolute top-1 right-3">
+      <div className="flex absolute top-0.5 right-3">
         <div
           onClick={(_) => toggleProfileDialog(userModal)}
           className="profile"
         >
           <AiOutlineUser size={ICONSIZE} />
         </div>
-        <div onClick={(_) => toggleMobileMenu(mobileMenu)} className="menu">
+        {loginState && <div onClick={(_) => toggleMobileMenu(mobileMenu)} className="menu">
           <AiOutlineMenu size={ICONSIZE} />
-        </div>
+        </div>}
       </div>
     </nav>
   );
