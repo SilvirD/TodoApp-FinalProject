@@ -1,5 +1,6 @@
-import { StarFilled, StarOutlined } from "@ant-design/icons";
+import { StarFilled, StarOutlined, DeleteOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
+import { apiClient } from "../../helper/api_client";
 
 const colorPallete = [
   "border-red-400",
@@ -19,6 +20,7 @@ function TableItem({
   members,
   onPageChange,
   onMarkedTable,
+  onReloadTable,
 }) {
   const randColor =
     colorPallete[Math.floor(Math.random() * colorPallete.length)];
@@ -28,6 +30,12 @@ function TableItem({
   useEffect(() => {
     setBorderColor(randColor);
   }, []);
+
+  const handleDeleteTable = (tableId) => {
+    apiClient
+      .delete(`table/deleteTable/${tableId}`)
+      .then((response) => onReloadTable());
+  };
 
   return (
     <>
@@ -43,6 +51,12 @@ function TableItem({
           <div>
             <h1>{tableName}</h1>
           </div>
+        </div>
+        <div
+          className="Table__Content__Item__Remove"
+          onClick={() => handleDeleteTable(tableId)}
+        >
+          <DeleteOutlined className="Remove" />
         </div>
         <div className="Table__Content__Item__Icon">
           {isTableChecked ? (

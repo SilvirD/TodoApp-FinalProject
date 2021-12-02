@@ -29,11 +29,15 @@ function Table() {
     users_in_ws: [],
   });
 
-  useEffect(() => {
+  const reloadTables = () => {
     apiClient.get(`/table/ws/${workspaceId}`).then((response) => {
       const { data } = response.data;
       setTableItems(data);
     });
+  };
+
+  useEffect(() => {
+    reloadTables();
   }, [newTable]);
 
   useEffect(() => {
@@ -138,6 +142,7 @@ function Table() {
                   members={users_in_table}
                   onMarkedTable={() => handleMarkedTable(_id, star)}
                   onPageChange={() => handlePageChange(_id)}
+                  onReloadTable={reloadTables}
                 />
               );
             }
@@ -161,6 +166,7 @@ function Table() {
                 members={users_in_table}
                 onMarkedTable={() => handleMarkedTable(_id, star)}
                 onPageChange={() => handlePageChange(_id)}
+                onReloadTable={reloadTables}
               />
             );
           })}
